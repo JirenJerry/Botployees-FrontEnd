@@ -21,6 +21,7 @@ function launchWhatsAppSignup() {
         scope: 'whatsapp_business_management, whatsapp_business_messaging',
         extras: {
             feature: 'whatsapp_embedded_signup',
+            "version": 2,
             setup: {
 
             }
