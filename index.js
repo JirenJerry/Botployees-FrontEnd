@@ -13,6 +13,7 @@ function launchWhatsAppSignup() {
         if (response.authResponse) {
             const accessToken = response.authResponse.accessToken;
             //Use this token to call the debug_token API and get the shared WABA's ID
+            console.log(accessToken)
         } else {
             console.log('User cancelled login or did not fully authorize.');
         }
