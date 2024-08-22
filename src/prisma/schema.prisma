@@ -8,23 +8,24 @@ generator client {
   binaryTargets   = ["native", "debian-openssl-3.0.x", "linux-arm64-openssl-1.1.x", "rhel-openssl-3.0.x"]
 }
 
-model users {
+model User {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
   name          String?
   email         String?         @unique
   emailVerified DateTime?
   image         String?
-  accounts      accounts[]
-  sessions      sessions[]
+  accounts      Account[]
+  sessions      Session[]
   role          String @default("User")
   // Optional for WebAuthn support
   Authenticator Authenticator[]
   businessId String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+    @@map("users")
 }
  
-model accounts {
+model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
   userId            String  @db.ObjectId
   type              String
@@ -41,20 +42,22 @@ model accounts {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
  
-  user users @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
  
   @@unique([provider, providerAccountId])
+    @@map("accounts")
 }
  
-model sessions {
+model Session {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   sessionToken String   @unique
   userId       String   @db.ObjectId
   expires      DateTime
-  user         users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+    @@map("sessions")
 }
  
 model VerificationToken {
@@ -64,6 +67,7 @@ model VerificationToken {
   expires    DateTime
  
   @@unique([identifier, token])
+   @@map("verificationtokens")
 }
  
 // Optional for WebAuthn support
@@ -77,7 +81,8 @@ model Authenticator {
   credentialBackedUp   Boolean
   transports           String?
  
-  user users @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
  
   @@unique([userId, credentialID])
+  
 }

@@ -12,12 +12,20 @@ export const authOptions = {
   // ** Configure one or more authentication providers
   // ** Please refer to https://next-auth.js.org/configuration/options#providers for more `providers` options
   providers: [
-    
+
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       async profile(profile) {
-        return { id: profile.sub ?? "User", role: profile.role ?? "User", businessId: profile.businessId }
+        console.log(profile)
+        return {
+          id: profile.sub
+          , role: profile.role ?? "User"
+          , businessId: profile.businessId
+          , email : profile.email
+          , image : profile.picture
+          , name : profile.name
+        }
       }
     })
 
@@ -55,7 +63,7 @@ export const authOptions = {
      * via `jwt()` callback to make them accessible in the `session()` callback
      */
     async jwt({ token, trigger, user }) {
-     
+
       if (user) {
         /*
          * For adding custom parameters to user in session, we first need to add those parameters
@@ -70,16 +78,16 @@ export const authOptions = {
       return token
     },
     async session({ session, user, trigger }) {
-    
+
       if (session.user) {
 
         // ** Add custom params to user in session which are added in `jwt()` callback via `token` parameter
         session.user.name = user.name
         session.user.role = user.role
         session.user.businessId = user.businessId
-       
+
       }
-     
+
       return session
     }
   }
