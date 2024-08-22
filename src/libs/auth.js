@@ -79,7 +79,7 @@ export const authOptions = {
         session.user.businessId = user.businessId
        
       }
-      console.log(session)
+     
       return session
     }
   }

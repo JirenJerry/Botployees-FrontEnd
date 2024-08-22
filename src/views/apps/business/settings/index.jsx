@@ -24,7 +24,8 @@ const Settings = ({ session: initialSession, tabContentList }) => {
   const [session, setSession] = useState(initialSession)
 
   const checkBusiness = (session) => {
-    console.log(session)
+    
+    
     return !session?.user?.businessId
   }
 
