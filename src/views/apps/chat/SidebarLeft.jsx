@@ -2,6 +2,7 @@
 import { useState } from 'react'
 
 // MUI Imports
+import Grid from '@mui/material/Grid'
 import Avatar from '@mui/material/Avatar'
 import TextField from '@mui/material/TextField'
 import Drawer from '@mui/material/Drawer'
@@ -10,6 +11,10 @@ import Chip from '@mui/material/Chip'
 import Autocomplete from '@mui/material/Autocomplete'
 import InputAdornment from '@mui/material/InputAdornment'
 import IconButton from '@mui/material/IconButton'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import Select from '@mui/material/Select'
+import MenuItem from '@mui/material/MenuItem'
 
 // Third-party Imports
 import classnames from 'classnames'
@@ -120,7 +125,8 @@ const SidebarLeft = props => {
   // States
   const [userSidebar, setUserSidebar] = useState(false)
   const [searchValue, setSearchValue] = useState()
-
+  let timezone = ''
+  
   const handleChange = (event, newValue) => {
     setSearchValue(newValue)
     dispatch(addNewChat({ id: chatStore.contacts.find(contact => contact.fullName === newValue)?.id }))
@@ -154,6 +160,7 @@ const SidebarLeft = props => {
           }
         }}
       >
+  
         <div className='flex plb-[18px] pli-5 gap-4 border-be'>
           <AvatarWithBadge
             alt={chatStore.profileUser.fullName}
@@ -163,6 +170,7 @@ const SidebarLeft = props => {
               setUserSidebar(true)
             }}
           />
+
           <div className='flex is-full items-center flex-auto sm:gap-x-3'>
             <Autocomplete
               fullWidth

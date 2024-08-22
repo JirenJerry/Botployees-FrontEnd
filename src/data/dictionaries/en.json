@@ -1,5 +1,8 @@
 {
     "navigation": {
+        "channels":"Channels",
+        "assistants" : "Assistants",
+        "business": "Business",
         "dashboards": "Dashboards",
         "crm": "CRM",
         "analytics": "Analytics",
