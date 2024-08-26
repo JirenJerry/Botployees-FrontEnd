@@ -11,19 +11,19 @@ import { authOptions } from '@/libs/auth'
 // Component Imports
 import Settings from '@views/apps/business/settings'
 
-const StoreDetailsTab = dynamic(() => import('@/views/apps/business/settings/business-details'))
+const BusinessDetails = dynamic(() => import('@/views/apps/business/settings/business-details'))
 const PaymentsTab = dynamic(() => import('@views/apps/business/settings/payments'))
 const LocationsTab = dynamic(() => import('@views/apps/business/settings/locations'))
 
 // Vars
 const tabContentList = () => ({
-  'business-details': <StoreDetailsTab />,
+  'business-details': <BusinessDetails />,
   payments: <PaymentsTab  />,
   locations: <LocationsTab  />
 })
 
 const businessSettings =async  () => {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions())
   
   return  <Settings session={session} tabContentList={ tabContentList()} />
 }

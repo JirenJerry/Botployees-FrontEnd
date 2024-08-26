@@ -14,7 +14,7 @@ import themeConfig from '@configs/themeConfig'
 import { getLocalizedUrl } from '@/utils/i18n'
 
 const GuestOnlyRoute = async ({ children, lang }) => {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions())
 
   if (session) {
    

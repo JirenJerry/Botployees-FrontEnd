@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react'
 
 // next-auth imports
-import { useSession } from 'next-auth/react'
+import { useSession, signIn } from 'next-auth/react'
 
 // MUI Imports
 import Grid from '@mui/material/Grid'
@@ -23,9 +23,7 @@ const Settings = ({ session: initialSession, tabContentList }) => {
   const { data: sessionFromHook, update } = useSession()
   const [session, setSession] = useState(initialSession)
 
-  const checkBusiness = (session) => {
-    
-    
+  const checkBusiness = session => {
     return !session?.user?.businessId
   }
 
@@ -43,11 +41,11 @@ const Settings = ({ session: initialSession, tabContentList }) => {
   }
 
   const handleSave = async () => {
-    await update()
+ 
     setIsDisabled(checkBusiness(sessionFromHook))
+    await signIn('google', null, { prompt: 'login', scope: 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email', updateScope : true })
+    await update()
   }
-
-  
 
   return (
     <TabContext value={activeTab}>

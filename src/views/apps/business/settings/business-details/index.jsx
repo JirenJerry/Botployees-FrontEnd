@@ -9,7 +9,7 @@ import Profile from './Profile'
 import TimeZone from './TimeZone'
 import StoreCurrency from './StoreCurrency'
 
-const StoreDetails = () => {
+const BusinessDetails = () => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
@@ -27,4 +27,4 @@ const StoreDetails = () => {
   )
 }
 
-export default StoreDetails
+export default BusinessDetails

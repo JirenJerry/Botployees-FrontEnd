@@ -7,7 +7,7 @@ import { authOptions } from '@/libs/auth'
 import RoleRedirect from '@/components/RoleRedirect'
 
 export default async function AuthGuard({ children, locale }) {
-  const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions())
 
   return <>{session?.user?.role === 'Admin' ? children : <RoleRedirect lang={locale} />}</>
 }
