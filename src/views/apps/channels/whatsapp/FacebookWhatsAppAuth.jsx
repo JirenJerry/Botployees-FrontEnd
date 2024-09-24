@@ -48,7 +48,7 @@ const FacebookWhatsAppAuth = () => {
         <div
           className='fb-login-button'
           data-width='100'
-          data-config_id={1034854994787440}
+          data-config_id={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID}
           data-size='medium'
           data-button-type='login_with'
           data-layout='default'
