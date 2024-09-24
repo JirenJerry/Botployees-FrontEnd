@@ -18,7 +18,7 @@ import useFacebookSDK from '@/utils/facebookSDK'
 
 
 const FacebookWhatsAppAuth = () => {
-  const appId = '1551154382287367' // Your actual Facebook App ID
+  const appId = process.env.NEXT_PUBLIC_FACEBOOK_APP_ID // Your actual Facebook App ID
 
   // Initialize the Facebook SDK
   useFacebookSDK(appId)
@@ -48,7 +48,7 @@ const FacebookWhatsAppAuth = () => {
         <div
           className='fb-login-button'
           data-width='100'
-          data-config_id={process.env.NEXT_PUBLIC_FACEBOOK_APP_ID}
+          data-config_id={process.env.NEXT_PUBLIC_FACEBOOK_CONFIGURATION_ID}
           data-size='medium'
           data-button-type='login_with'
           data-layout='default'
