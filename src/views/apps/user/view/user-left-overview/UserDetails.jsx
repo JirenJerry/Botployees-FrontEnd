@@ -7,7 +7,7 @@ import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
 
 // Component Imports
-import EditUserInfo from '@components/dialogs/edit-user-info'
+
 import ConfirmationDialog from '@components/dialogs/confirmation-dialog'
 import OpenDialogOnElementClick from '@components/dialogs/OpenDialogOnElementClick'
 import CustomAvatar from '@core/components/mui/Avatar'
@@ -44,28 +44,9 @@ const UserDetails = () => {
                 <CustomAvatar alt='user-profile' src='/images/avatars/1.png' variant='rounded' size={120} />
                 <Typography variant='h5'>{`${userData.firstName} ${userData.lastName}`}</Typography>
               </div>
-              <Chip label='Subscriber' color='error' size='small' variant='tonal' />
+              <Chip label='Administrator' color='error' size='small' variant='tonal' />
             </div>
-            <div className='flex items-center justify-around flex-wrap gap-4'>
-              <div className='flex items-center gap-4'>
-                <CustomAvatar variant='rounded' color='primary' skin='light'>
-                  <i className='ri-check-line' />
-                </CustomAvatar>
-                <div>
-                  <Typography variant='h5'>1.23k</Typography>
-                  <Typography>Task Done</Typography>
-                </div>
-              </div>
-              <div className='flex items-center gap-4'>
-                <CustomAvatar variant='rounded' color='primary' skin='light'>
-                  <i className='ri-star-smile-line' />
-                </CustomAvatar>
-                <div>
-                  <Typography variant='h5'>568</Typography>
-                  <Typography>Project Done</Typography>
-                </div>
-              </div>
-            </div>
+         
           </div>
           <div>
             <Typography variant='h5'>Details</Typography>
@@ -122,17 +103,12 @@ const UserDetails = () => {
             </div>
           </div>
           <div className='flex gap-4 justify-center'>
+         
             <OpenDialogOnElementClick
               element={Button}
-              elementProps={buttonProps('Edit', 'primary', 'contained')}
-              dialog={EditUserInfo}
-              dialogProps={{ data: userData }}
-            />
-            <OpenDialogOnElementClick
-              element={Button}
-              elementProps={buttonProps('Suspend', 'error', 'outlined')}
+              elementProps={buttonProps('Remove', 'error', 'outlined')}
               dialog={ConfirmationDialog}
-              dialogProps={{ type: 'suspend-account' }}
+              dialogProps={{ type: 'remove-employee' }}
             />
           </div>
         </CardContent>

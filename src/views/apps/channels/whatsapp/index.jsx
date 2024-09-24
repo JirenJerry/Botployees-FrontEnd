@@ -2,17 +2,19 @@
 import Grid from '@mui/material/Grid'
 
 // Component Imports
-import UserListTable from './UserListTable'
 
-const UserList = ({ userData }) => {
+import TwoFactorAuthenticationCard from './FacebookWhatsAppAuth'
+
+
+const WhatsApp = () => {
   return (
     <Grid container spacing={6}>
-   
       <Grid item xs={12}>
-        <UserListTable tableData={userData} />
+      <TwoFactorAuthenticationCard />
       </Grid>
+   
     </Grid>
   )
 }
 
-export default UserList
+export default WhatsApp

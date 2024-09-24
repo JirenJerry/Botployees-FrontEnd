@@ -1,5 +1,8 @@
 {
     "navigation": {
+        "invite": "Invitar",
+        "administration":"Administración",
+        "employees":"Empleados",
         "channels":"Canales",
         "assistants": "Asistentes",
         "business": "Negocio",

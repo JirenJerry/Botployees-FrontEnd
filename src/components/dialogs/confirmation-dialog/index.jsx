@@ -19,7 +19,7 @@ const ConfirmationDialog = ({ open, setOpen, type }) => {
   const [userInput, setUserInput] = useState(false)
 
   // Vars
-  const Wrapper = type === 'suspend-account' ? 'div' : Fragment
+  const Wrapper = type === 'remove-employee' ? 'div' : Fragment
 
   const handleSecondDialogClose = () => {
     setSecondDialog(false)
@@ -38,19 +38,19 @@ const ConfirmationDialog = ({ open, setOpen, type }) => {
         <DialogContent className='flex items-center flex-col text-center sm:pbs-16 sm:pbe-6 sm:pli-16'>
           <i className='ri-error-warning-line text-[88px] mbe-6 text-warning' />
           <Wrapper
-            {...(type === 'suspend-account' && {
+            {...(type === 'remove-employee' && {
               className: 'flex flex-col items-center gap-2'
             })}
           >
             <Typography variant='h4'>
               {type === 'delete-account' && 'Are you sure you want to deactivate your account?'}
               {type === 'unsubscribe' && 'Are you sure to cancel your subscription?'}
-              {type === 'suspend-account' && 'Are you sure?'}
+              {type === 'remove-employee' && 'Are you sure?'}
               {type === 'delete-order' && 'Are you sure?'}
               {type === 'delete-customer' && 'Are you sure?'}
             </Typography>
-            {type === 'suspend-account' && (
-              <Typography color='text.primary'>You won&#39;t be able to revert user!</Typography>
+            {type === 'remove-employee' && (
+              <Typography color='text.primary'>You will have to invite the user back!</Typography>
             )}
             {type === 'delete-order' && (
               <Typography color='text.primary'>You won&#39;t be able to revert order!</Typography>
@@ -62,8 +62,8 @@ const ConfirmationDialog = ({ open, setOpen, type }) => {
         </DialogContent>
         <DialogActions className='justify-center pbs-0 sm:pbe-16 sm:pli-16'>
           <Button variant='contained' onClick={() => handleConfirmation(true)}>
-            {type === 'suspend-account'
-              ? 'Yes, Suspend User!'
+            {type === 'remove-employee'
+              ? 'Yes, Remove Employee!'
               : type === 'delete-order'
                 ? 'Yes, Delete Order!'
                 : type === 'delete-customer'
@@ -103,7 +103,7 @@ const ConfirmationDialog = ({ open, setOpen, type }) => {
               <>
                 {type === 'delete-account' && 'Your account has been deactivated successfully.'}
                 {type === 'unsubscribe' && 'Your subscription cancelled successfully.'}
-                {type === 'suspend-account' && 'User has been suspended.'}
+                {type === 'remove-employee' && 'Employee has been removed.'}
                 {type === 'delete-order' && 'Your order deleted successfully.'}
                 {type === 'delete-customer' && 'Your customer removed successfully.'}
               </>
@@ -111,7 +111,7 @@ const ConfirmationDialog = ({ open, setOpen, type }) => {
               <>
                 {type === 'delete-account' && 'Account Deactivation Cancelled!'}
                 {type === 'unsubscribe' && 'Unsubscription Cancelled!!'}
-                {type === 'suspend-account' && 'Cancelled Suspension :)'}
+                {type === 'remove-employee' && 'Employee Remove Cancelled  :)'}
                 {type === 'delete-order' && 'Order Deletion Cancelled'}
                 {type === 'delete-customer' && 'Customer Deletion Cancelled'}
               </>

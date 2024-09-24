@@ -22,7 +22,8 @@ export const db = {
       qty: 827,
       status: 'Published',
       image: '/images/apps/ecommerce/product-2.png',
-      productBrand: 'Echo Dot Smart speaker with Alexa'
+      productBrand: 'Echo Dot Smart speaker with Alexa',
+      deniesService : true
     },
     {
       id: 3,

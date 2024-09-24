@@ -106,8 +106,8 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             {dictionary['navigation'].chat}
           </MenuItem>
           <SubMenu label={dictionary['navigation'].channels} icon={<i className='ri-signal-tower-line' />}>
-            <MenuItem href={`/${locale}/apps/channels/list`}>{dictionary['navigation'].list}</MenuItem>
-            <MenuItem href={`/${locale}/apps/channels/add`}>{dictionary['navigation'].add}</MenuItem>
+
+            <MenuItem href={`/${locale}/apps/channels/settings`}>{dictionary['navigation'].settings}</MenuItem>
           </SubMenu>
           <SubMenu label={dictionary['navigation'].invoice} icon={<i className='ri-bill-line' />}>
             <MenuItem href={`/${locale}/apps/invoice/list`}>{dictionary['navigation'].list}</MenuItem>
@@ -123,111 +123,13 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             </MenuItem>
             <MenuItem href={`/${locale}/apps/invoice/add`}>{dictionary['navigation'].add}</MenuItem>
           </SubMenu>
-          <SubMenu label={dictionary['navigation'].user} icon={<i className='ri-user-line' />}>
+          <SubMenu label={dictionary['navigation'].employees} icon={<i className='ri-user-line' />}>
             <MenuItem href={`/${locale}/apps/user/list`}>{dictionary['navigation'].list}</MenuItem>
-            <MenuItem href={`/${locale}/apps/user/view`}>{dictionary['navigation'].view}</MenuItem>
+     
           </SubMenu>
-          <SubMenu label={dictionary['navigation'].rolesPermissions} icon={<i className='ri-lock-2-line' />}>
-            <MenuItem href={`/${locale}/apps/roles`}>{dictionary['navigation'].roles}</MenuItem>
-            <MenuItem href={`/${locale}/apps/permissions`}>{dictionary['navigation'].permissions}</MenuItem>
-          </SubMenu>
-          <SubMenu label={dictionary['navigation'].pages} icon={<i className='ri-layout-left-line' />}>
-            <MenuItem href={`/${locale}/pages/user-profile`}>{dictionary['navigation'].userProfile}</MenuItem>
-            <MenuItem href={`/${locale}/pages/account-settings`}>{dictionary['navigation'].accountSettings}</MenuItem>
-            <MenuItem href={`/${locale}/pages/faq`}>{dictionary['navigation'].faq}</MenuItem>
-            <MenuItem href={`/${locale}/pages/pricing`}>{dictionary['navigation'].pricing}</MenuItem>
-            <SubMenu label={dictionary['navigation'].miscellaneous}>
-              <MenuItem href={`/${locale}/pages/misc/coming-soon`} target='_blank'>
-                {dictionary['navigation'].comingSoon}
-              </MenuItem>
-              <MenuItem href={`/${locale}/pages/misc/under-maintenance`} target='_blank'>
-                {dictionary['navigation'].underMaintenance}
-              </MenuItem>
-              <MenuItem href={`/${locale}/pages/misc/404-not-found`} target='_blank'>
-                {dictionary['navigation'].pageNotFound404}
-              </MenuItem>
-              <MenuItem href={`/${locale}/pages/misc/401-not-authorized`} target='_blank'>
-                {dictionary['navigation'].notAuthorized401}
-              </MenuItem>
-            </SubMenu>
-          </SubMenu>
-          <SubMenu label={dictionary['navigation'].authPages} icon={<i className='ri-shield-keyhole-line' />}>
-            <SubMenu label={dictionary['navigation'].login}>
-              <MenuItem href={`/${locale}/pages/auth/login-v1`} target='_blank'>
-                {dictionary['navigation'].loginV1}
-              </MenuItem>
-              <MenuItem href={`/${locale}/pages/auth/login-v2`} target='_blank'>
-                {dictionary['navigation'].loginV2}
-              </MenuItem>
-            </SubMenu>
-            <SubMenu label={dictionary['navigation'].register}>
-              <MenuItem href={`/${locale}/pages/auth/register-v1`} target='_blank'>
-                {dictionary['navigation'].registerV1}
-              </MenuItem>
-              <MenuItem href={`/${locale}/pages/auth/register-v2`} target='_blank'>
-                {dictionary['navigation'].registerV2}
-              </MenuItem>
-              <MenuItem href={`/${locale}/pages/auth/register-multi-steps`} target='_blank'>
-                {dictionary['navigation'].registerMultiSteps}
-              </MenuItem>
-            </SubMenu>
-            <SubMenu label={dictionary['navigation'].verifyEmail}>
-              <MenuItem href={`/${locale}/pages/auth/verify-email-v1`} target='_blank'>
-                {dictionary['navigation'].verifyEmailV1}
-              </MenuItem>
-              <MenuItem href={`/${locale}/pages/auth/verify-email-v2`} target='_blank'>
-                {dictionary['navigation'].verifyEmailV2}
-              </MenuItem>
-            </SubMenu>
-            <SubMenu label={dictionary['navigation'].forgotPassword}>
-              <MenuItem href={`/${locale}/pages/auth/forgot-password-v1`} target='_blank'>
-                {dictionary['navigation'].forgotPasswordV1}
-              </MenuItem>
-              <MenuItem href={`/${locale}/pages/auth/forgot-password-v2`} target='_blank'>
-                {dictionary['navigation'].forgotPasswordV2}
-              </MenuItem>
-            </SubMenu>
-            <SubMenu label={dictionary['navigation'].resetPassword}>
-              <MenuItem href={`/${locale}/pages/auth/reset-password-v1`} target='_blank'>
-                {dictionary['navigation'].resetPasswordV1}
-              </MenuItem>
-              <MenuItem href={`/${locale}/pages/auth/reset-password-v2`} target='_blank'>
-                {dictionary['navigation'].resetPasswordV2}
-              </MenuItem>
-            </SubMenu>
-            <SubMenu label={dictionary['navigation'].twoSteps}>
-              <MenuItem href={`/${locale}/pages/auth/two-steps-v1`} target='_blank'>
-                {dictionary['navigation'].twoStepsV1}
-              </MenuItem>
-              <MenuItem href={`/${locale}/pages/auth/two-steps-v2`} target='_blank'>
-                {dictionary['navigation'].twoStepsV2}
-              </MenuItem>
-            </SubMenu>
-          </SubMenu>
-          <SubMenu label={dictionary['navigation'].wizardExamples} icon={<i className='ri-git-commit-line' />}>
-            <MenuItem href={`/${locale}/pages/wizard-examples/checkout`}>{dictionary['navigation'].checkout}</MenuItem>
-            <MenuItem href={`/${locale}/pages/wizard-examples/property-listing`}>
-              {dictionary['navigation'].propertyListing}
-            </MenuItem>
-            <MenuItem href={`/${locale}/pages/wizard-examples/create-deal`}>
-              {dictionary['navigation'].createDeal}
-            </MenuItem>
-          </SubMenu>
-          <MenuItem href={`/${locale}/pages/dialog-examples`} icon={<i className='ri-tv-2-line' />}>
-            {dictionary['navigation'].dialogExamples}
-          </MenuItem>
-          <SubMenu label={dictionary['navigation'].widgetExamples} icon={<i className='ri-bar-chart-box-line' />}>
-            <MenuItem href={`/${locale}/pages/widget-examples/basic`}>{dictionary['navigation'].basic}</MenuItem>
-            <MenuItem href={`/${locale}/pages/widget-examples/advanced`}>{dictionary['navigation'].advanced}</MenuItem>
-            <MenuItem href={`/${locale}/pages/widget-examples/statistics`}>
-              {dictionary['navigation'].statistics}
-            </MenuItem>
-            <MenuItem href={`/${locale}/pages/widget-examples/charts`}>{dictionary['navigation'].charts}</MenuItem>
-            <MenuItem href={`/${locale}/pages/widget-examples/gamification`}>
-              {dictionary['navigation'].gamification}
-            </MenuItem>
-            <MenuItem href={`/${locale}/pages/widget-examples/actions`}>{dictionary['navigation'].actions}</MenuItem>
-          </SubMenu>
+       
+       
+    
         </MenuSection>
         <MenuSection label={dictionary['navigation'].formsAndTables}>
           <MenuItem href={`/${locale}/forms/form-layouts`} icon={<i className='ri-layout-4-line' />}>
