@@ -4,11 +4,14 @@ import Grid from '@mui/material/Grid'
 // Component Imports
 import UserDetails from './UserDetails'
 
-const UserLeftOverview = () => {
+
+
+
+const  UserLeftOverview = (employeeData) => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <UserDetails />
+        <UserDetails {...employeeData}/>
       </Grid>
      
     </Grid>

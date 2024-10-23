@@ -1,6 +1,7 @@
 // Third-party Imports
 
 import GoogleProvider from 'next-auth/providers/google'
+import CredentialProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { PrismaClient } from '@prisma/client'
 
@@ -13,7 +14,59 @@ export const authOptions = (req, res) => {
     // ** Configure one or more authentication providers
     // ** Please refer to https://next-auth.js.org/configuration/options#providers for more `providers` options
     providers: [
+      CredentialProvider({
+        // ** The name to display on the sign in form (e.g. 'Sign in with...')
+        // ** For more details on Credentials Provider, visit https://next-auth.js.org/providers/credentials
+        name: 'Credentials',
+        type: 'credentials',
 
+        /*
+         * As we are using our own Sign-in page, we do not need to change
+         * username or password attributes manually in following credentials object.
+         */
+        credentials: {},
+        async authorize(credentials) {
+          /*
+           * You need to provide your own logic here that takes the credentials submitted and returns either
+           * an object representing a user or value that is false/null if the credentials are invalid.
+           * For e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
+           * You can also use the `req` object to obtain additional parameters (i.e., the request IP address)
+           */
+          const { email, password } = credentials
+
+          try {
+
+            // ** Login API Call to match the user credentials and receive user data in response along with his role
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/login`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ email, password })
+            })
+
+            const data = await res.json()
+
+            if (res.status === 401) {
+              throw new Error(JSON.stringify(data))
+            }
+
+            if (res.status === 200) {
+              /*
+               * Please unset all the sensitive information of the user either from API response or before returning
+               * user data below. Below return statement will set the user object in the token and the same is set in
+               * the session which will be accessible all over the app.
+               */
+
+              return data.data[0]
+            }
+
+            return null
+          } catch (e) {
+            throw new Error(e.message)
+          }
+        }
+      }),
       GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -49,7 +102,7 @@ export const authOptions = (req, res) => {
        * If you use a custom credentials provider, user accounts will not be persisted in a database by NextAuth.js (even if one is configured).
        * The option to use JSON Web Tokens for session tokens must be enabled to use a custom credentials provider.
        */
-      strategy: 'database',
+      strategy: 'jwt',
 
       // ** Seconds - How long until an idle session expires and is no longer valid
       maxAge: 30 * 24 * 60 * 60 // ** 30 days
@@ -67,18 +120,24 @@ export const authOptions = (req, res) => {
        * the `session()` callback. So we have to add custom parameters in `token`
        * via `jwt()` callback to make them accessible in the `session()` callback
        */
-      async jwt({ token, trigger, user }) {
+      async jwt({ token, account, user, profile, trigger, session }) {
+        if (trigger === 'update' && session?.currentEmployeeId) {
 
-        if (user) {
+          token.currentEmployeeId = session.currentEmployeeId
+        }
+        if (account) {
+          token.accessToken = account.access_token
+        }
+        if (profile) {
           /*
            * For adding custom parameters to user in session, we first need to add those parameters
            * in token which then will be available in the `session()` callback
            */
-         
 
-          token.name = user.name
-          token.role = user.role || 'User'
-          token.businessId = user.businessId
+
+          token.name = profile.name
+          token.role = profile.role || 'User'
+          token.businessId = profile.businessId
         }
 
         return token
@@ -86,16 +145,26 @@ export const authOptions = (req, res) => {
 
       //
 
-      async session({ session, user, trigger }) {
+      async session({ session, user, token, trigger, newSession }) {
+        let userInfo = token
+      
+        if (session.user && userInfo) {
+          if (userInfo.sub) {
+            let userDB = await prisma.user.findUnique({ where: { id: userInfo.sub } })
+            userDB.sub = userDB.id
+            userInfo = userDB
+          }
 
-        if (session.user) {
 
           // ** Add custom params to user in session which are added in `jwt()` callback via `token` parameter
-          session.user.name = user.name
-          session.user.id = user.id
-          session.user.role = user.role
-          session.user.businessId = user.businessId
-        
+          session.user.name = userInfo.name
+          session.user.id = userInfo.sub
+          session.user.role = userInfo.role
+          session.user.businessId = userInfo.businessId
+
+          session.currentEmployeeId = token.currentEmployeeId
+
+
         }
 
         return session

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const useFacebookSDK = (appId, version = 'v11.0') => {
+const useFacebookSDK = (appId, version = 'v18.0') => {
     useEffect(() => {
         // Check if the Facebook SDK script is already added
         if (document.getElementById('facebook-jssdk')) {
@@ -12,11 +12,13 @@ const useFacebookSDK = (appId, version = 'v11.0') => {
             FB.init({
                 appId: appId, // Use the app ID from the parameter
                 cookie: true,
+                autoLogAppEvents : true,
+                
                 xfbml: true,
                 version: version,
             });
 
-            FB.AppEvents.logPageView();
+           
         };
 
         // Load Facebook SDK

@@ -3,6 +3,7 @@
 // React Imports
 import { useEffect } from 'react'
 
+// react-hook-form Imports
 import { useForm, Controller } from 'react-hook-form'
 
 // MUI Imports
@@ -16,7 +17,7 @@ import Select from '@mui/material/Select'
 import TextField from '@mui/material/TextField'
 import FormHelperText from '@mui/material/FormHelperText'
 
-const ProductOrganize = ({ onChange, onFormSubmit, productData, handleProductDataChange }) => {
+const ProductOrganize = ({ onFormSubmit, productData, handleProductDataChange }) => {
   const {
     control,
     handleSubmit,
@@ -44,14 +45,16 @@ const ProductOrganize = ({ onChange, onFormSubmit, productData, handleProductDat
 
   useEffect(() => {
     if (onFormSubmit) {
-      onFormSubmit(
-        handleSubmit(data => {
-          // Update parent state with valid data
-          handleProductDataChange(data)
-        })
-      )
+      onFormSubmit(handleSubmit)
     }
-  }, [handleSubmit, onFormSubmit, handleProductDataChange])
+  }, [handleSubmit, onFormSubmit])
+
+  const handleFieldChange = (fieldName, value) => {
+    handleProductDataChange({
+      ...productData,
+      [fieldName]: value
+    })
+  }
 
   return (
     <Card>
@@ -69,11 +72,11 @@ const ProductOrganize = ({ onChange, onFormSubmit, productData, handleProductDat
                   {...field}
                   onChange={e => {
                     field.onChange(e)
-                    onChange('vendor', e.target.value)
+                    handleFieldChange('vendor', e.target.value)
                   }}
                 >
-                  <MenuItem value={`Company's Services`}>Company`&apos;`s Services</MenuItem>
-                  <MenuItem value={`Company's Products`}>Company`&apos;`s Products</MenuItem>
+                  <MenuItem value={`Company's Services`}>Company&apos;s Services</MenuItem>
+                  <MenuItem value={`Company's Products`}>Company&apos;s Products</MenuItem>
                 </Select>
               </FormControl>
             )}
@@ -82,7 +85,7 @@ const ProductOrganize = ({ onChange, onFormSubmit, productData, handleProductDat
           <Controller
             name='category'
             control={control}
-            rules={{ required: 'Category is required' }} // Category is required
+            rules={{ required: 'Category is required' }}
             render={({ field }) => (
               <FormControl fullWidth error={!!errors.category}>
                 <InputLabel>Select Category</InputLabel>
@@ -91,7 +94,7 @@ const ProductOrganize = ({ onChange, onFormSubmit, productData, handleProductDat
                   {...field}
                   onChange={e => {
                     field.onChange(e)
-                    onChange('category', e.target.value)
+                    handleFieldChange('category', e.target.value)
                   }}
                 >
                   <MenuItem value='Services'>Services</MenuItem>
@@ -126,12 +129,12 @@ const ProductOrganize = ({ onChange, onFormSubmit, productData, handleProductDat
                   {...field}
                   onChange={e => {
                     field.onChange(e)
-                    onChange('collection', e.target.value)
+                    handleFieldChange('collection', e.target.value)
                   }}
                 >
-                  <MenuItem value={`Men's Clothing`}>Men`&apos;`s Clothing</MenuItem>
-                  <MenuItem value={`Women's Clothing`}>Women`&apos;`s Clothing</MenuItem>
-                  <MenuItem value={`Kid's Clothing`}>Kid`&apos;`s Clothing</MenuItem>
+                  <MenuItem value={`Men's Clothing`}>Men&apos;s Clothing</MenuItem>
+                  <MenuItem value={`Women's Clothing`}>Women&apos;s Clothing</MenuItem>
+                  <MenuItem value={`Kid's Clothing`}>Kid&apos;s Clothing</MenuItem>
                 </Select>
               </FormControl>
             )}
@@ -148,7 +151,7 @@ const ProductOrganize = ({ onChange, onFormSubmit, productData, handleProductDat
                   {...field}
                   onChange={e => {
                     field.onChange(e)
-                    onChange('status', e.target.value)
+                    handleFieldChange('status', e.target.value)
                   }}
                 >
                   <MenuItem value='Published'>Published</MenuItem>
@@ -170,7 +173,7 @@ const ProductOrganize = ({ onChange, onFormSubmit, productData, handleProductDat
                 {...field}
                 onChange={e => {
                   field.onChange(e)
-                  onChange('tags', e.target.value)
+                  handleFieldChange('tags', e.target.value)
                 }}
               />
             )}

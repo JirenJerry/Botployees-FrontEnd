@@ -97,7 +97,7 @@ const Login = ({ mode }) => {
       password: data.password,
       redirect: false
     })
-
+  
     if (res && res.ok && res.error === null) {
       // Vars
       const redirectURL = searchParams.get('redirectTo') ?? '/'
@@ -105,6 +105,7 @@ const Login = ({ mode }) => {
       router.replace(getLocalizedUrl(redirectURL, locale))
     } else {
       if (res?.error) {
+        //crossOriginIsolated.log(res.error)
         const error = JSON.parse(res.error)
 
         setErrorState(error)

@@ -17,15 +17,15 @@ const ProductInformation = ({ productData, handleProductDataChange, onFormSubmit
     setValue
   } = useForm({
     defaultValues: {
-      productName: '',
-      productDescription: ''
+      name: '',
+      description: ''
     }
   })
 
   useEffect(() => {
     if (productData) {
-      setValue('productName', productData.productName || '')
-      setValue('productDescription', productData.productDescription || '')
+      setValue('name', productData.name || '')
+      setValue('description', productData.description || '')
     }
   }, [productData, setValue])
 
@@ -49,7 +49,7 @@ const ProductInformation = ({ productData, handleProductDataChange, onFormSubmit
         <Grid container spacing={5}>
           <Grid item xs={12}>
             <Controller
-              name='productName'
+              name='name'
               control={control}
               rules={{ required: 'Product name is required' }}
               render={({ field }) => (
@@ -58,11 +58,11 @@ const ProductInformation = ({ productData, handleProductDataChange, onFormSubmit
                   fullWidth
                   label='Product Name'
                   placeholder='Enter Product Name'
-                  error={!!errors.productName}
-                  helperText={errors.productName ? errors.productName.message : ''}
+                  error={!!errors.name}
+                  helperText={errors.name ? errors.name.message : ''}
                   onChange={e => {
                     field.onChange(e)
-                    handleFieldChange('productName', e.target.value)
+                    handleFieldChange('name', e.target.value)
                   }}
                 />
               )}
@@ -70,7 +70,7 @@ const ProductInformation = ({ productData, handleProductDataChange, onFormSubmit
           </Grid>
           <Grid item xs={12}>
             <Controller
-              name='productDescription'
+              name='description'
               control={control}
               rules={{ required: 'Product description is required', minLength: { value: 10, message: 'Description should be at least 10 characters' } }}
               render={({ field }) => (
@@ -81,11 +81,11 @@ const ProductInformation = ({ productData, handleProductDataChange, onFormSubmit
                   multiline
                   rows={4}
                   placeholder='Enter Product Description'
-                  error={!!errors.productDescription}
-                  helperText={errors.productDescription ? errors.productDescription.message : ''}
+                  error={!!errors.description}
+                  helperText={errors.description ? errors.description.message : ''}
                   onChange={e => {
                     field.onChange(e)
-                    handleFieldChange('productDescription', e.target.value)
+                    handleFieldChange('description', e.target.value)
                   }}
                 />
               )}

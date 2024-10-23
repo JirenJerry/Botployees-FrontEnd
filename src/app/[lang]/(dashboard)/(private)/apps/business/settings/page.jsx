@@ -45,7 +45,7 @@ const getBusinessData = async (businessId, userId) => {
 
 const businessSettings = async () => {
   const session = await getServerSession(authOptions())
-
+  
   let businessData = await getBusinessData(session?.user?.businessId,session?.user?.id)
  
   

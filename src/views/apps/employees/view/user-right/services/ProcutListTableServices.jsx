@@ -1,7 +1,7 @@
 'use client'
 
 // React Imports
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 // Next Imports
 import Link from 'next/link'
@@ -10,15 +10,13 @@ import { useParams } from 'next/navigation'
 // MUI Imports
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
-import Divider from '@mui/material/Divider'
 import Button from '@mui/material/Button'
+import Switch from '@mui/material/Switch'
+import Divider from '@mui/material/Divider'
+import IconButton from '@mui/material/IconButton'
+import TablePagination from '@mui/material/TablePagination'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
-import Chip from '@mui/material/Chip'
-import Checkbox from '@mui/material/Checkbox'
-import IconButton from '@mui/material/IconButton'
-import { styled } from '@mui/material/styles'
-import TablePagination from '@mui/material/TablePagination'
 
 // Third-party Imports
 import classnames from 'classnames'
@@ -36,21 +34,11 @@ import {
   getSortedRowModel
 } from '@tanstack/react-table'
 
-// Component Imports
-
-import AddUserDrawer from './AddUserDrawer'
-
-import CustomAvatar from '@core/components/mui/Avatar'
-
 // Util Imports
-import { getInitials } from '@/utils/getInitials'
 import { getLocalizedUrl } from '@/utils/i18n'
 
 // Style Imports
 import tableStyles from '@core/styles/table.module.css'
-
-// Styled Components
-const Icon = styled('i')({})
 
 const fuzzyFilter = (row, columnId, value, addMeta) => {
   // Rank the item
@@ -72,6 +60,7 @@ const DebouncedInput = ({ value: initialValue, onChange, debounce = 500, ...prop
   useEffect(() => {
     setValue(initialValue)
   }, [initialValue])
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       onChange(value)
@@ -84,116 +73,123 @@ const DebouncedInput = ({ value: initialValue, onChange, debounce = 500, ...prop
   return <TextField {...props} value={value} onChange={e => setValue(e.target.value)} size='small' />
 }
 
-// Vars
-const userRoleObj = {
-  ownership: { icon: 'ri-vip-crown-line', color: 'error' },
-  employee: { icon: 'ri-user-3-line', color: 'primary' },
-  author: { icon: 'ri-computer-line', color: 'warning' },
-  editor: { icon: 'ri-edit-box-line', color: 'info' },
-  maintainer: { icon: 'ri-pie-chart-2-line', color: 'success' },
-  subscriber: { icon: 'ri-user-3-line', color: 'primary' }
-}
-
-const userStatusObj = {
-  active: 'success',
-  pending: 'warning',
-  inactive: 'secondary'
-}
-
 // Column Definitions
 const columnHelper = createColumnHelper()
 
-const UserListTable = ({ tableData }) => {
+
+
+const ProductListTableServices = ({ productData }) => {
   // States
-  const [addUserOpen, setAddUserOpen] = useState(false)
   const [rowSelection, setRowSelection] = useState({})
-  const [data, setData] = useState(...[tableData])
-  const [filteredData, setFilteredData] = useState(data)
+  const [data, setData] = useState([...productData])
   const [globalFilter, setGlobalFilter] = useState('')
 
+  const saveEmployeeServices = async (servicesData)=>{
+      
+      const filteredData = servicesData.filter(item => 
+        item.hasOwnProperty('acceptService') || item.hasOwnProperty('deniesService')
+    );
+    const servicesId = filteredData.map(product => product._id)
+    console.log(servicesId)
+  }
+  const handleAcceptChange = rowId => {
+    setTimeout(() => {
+      setData(prevData =>
+        prevData.map(row => {
+          if (row.id === rowId) {
+           
+            return {
+              ...row,
+              acceptService: !row.acceptService,
+              deniesService: row.acceptService ? row.deniesService : false // If accept is turned on, turn off denies
+            }
+          }
+
+          return row
+        })
+      )
+    }, 100) 
+  }
+
+  // Handle deny switch toggle with a delay
+  const handleDenyChange = rowId => {
+    setTimeout(() => {
+      setData(prevData =>
+        prevData.map(row => {
+          if (row.id === rowId) {
+
+            return {
+              ...row,
+              deniesService: !row.deniesService,
+              acceptService: row.deniesService ? row.acceptService : false // If deny is turned on, turn off accept
+            }
+          }
+
+          return row
+        })
+      )
+    }, 100) 
+  }
+  
   // Hooks
+  
   const { lang: locale } = useParams()
 
   const columns = useMemo(
     () => [
-      {
-        id: 'select',
-        header: ({ table }) => (
-          <Checkbox
-            {...{
-              checked: table.getIsAllRowsSelected(),
-              indeterminate: table.getIsSomeRowsSelected(),
-              onChange: table.getToggleAllRowsSelectedHandler()
-            }}
-          />
-        ),
-        cell: ({ row }) => (
-          <Checkbox
-            {...{
-              checked: row.getIsSelected(),
-              disabled: !row.getCanSelect(),
-              indeterminate: row.getIsSomeSelected(),
-              onChange: row.getToggleSelectedHandler()
-            }}
-          />
-        )
-      },
-      columnHelper.accessor('fullName', {
-        header: 'User',
+      columnHelper.accessor('name', {
+        header: 'SERVICE',
         cell: ({ row }) => (
           <div className='flex items-center gap-4'>
-           {getAvatar({ avatar: row.original.avatar, fullName: row.original.name })}
+           {/*  <img src={row.original.image} width={38} height={38} className='rounded bg-actionHover' />*/}
             <div className='flex flex-col'>
               <Typography className='font-medium' color='text.primary'>
-                {row.original.fullName}
+                {row.original.name}
               </Typography>
-              
             </div>
           </div>
         )
       }),
-      columnHelper.accessor('email', {
-        header: 'Email',
-        cell: ({ row }) => <Typography>{row.original.email}</Typography>
-      }),
-      columnHelper.accessor('role', {
-        header: 'Role',
+      columnHelper.accessor('acceptService', {
+        header: 'ACCEPTS',
         cell: ({ row }) => (
-          <div className='flex items-center gap-2'>
-            <Icon
-              className={userRoleObj[row.original.businessRole].icon}
-              sx={{ color: `var(--mui-palette-${userRoleObj[row.original.businessRole].color}-main)`, fontSize: '1.375rem' }}
-            />
-            <Typography className='capitalize' color='text.primary'>
-              {row.original.businessRole}
-            </Typography>
-          </div>
-        )
+          <Switch
+            color='success'
+            defaultChecked={row.original.acceptService || false}
+            onChange={() => handleAcceptChange(row.original.id)}
+          />
+        ),
+        enableSorting: false
       }),
-    
-  
-      columnHelper.accessor('action', {
-        header: 'Action',
+      columnHelper.accessor('deniesService', {
+        header: 'DENIES',
+        cell: ({ row }) => (
+          <Switch
+            color='error'
+            defaultChecked={row.original.deniesService || false}
+            onChange={() => handleDenyChange(row.original.id)}
+          />
+        ),
+        enableSorting: false
+      }),
+      columnHelper.accessor('actions', {
+        header: 'Actions',
         cell: ({ row }) => (
           <div className='flex items-center'>
-      
-            <IconButton>
-              <Link href={getLocalizedUrl(`/apps/user/view/${row.original._id}`, locale)} className='flex'>
-                <i className='ri-eye-line text-textSecondary' />
-              </Link>
+            <IconButton size='small'>
+              <i className='ri-edit-box-line text-[22px] text-textSecondary' />
             </IconButton>
-          
           </div>
         ),
         enableSorting: false
       })
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [data, filteredData]
+    [data]
   )
 
   const table = useReactTable({
-    data: filteredData,
+    data: data, // Use the local data state for reactivity
     columns,
     filterFns: {
       fuzzy: fuzzyFilter
@@ -207,8 +203,7 @@ const UserListTable = ({ tableData }) => {
         pageSize: 10
       }
     },
-    enableRowSelection: true, //enable row selection for all rows
-    // enableRowSelection: row => row.original.age > 18, // or enable row selection conditionally per row
+    enableRowSelection: true, // enable row selection for all rows
     globalFilterFn: fuzzyFilter,
     onRowSelectionChange: setRowSelection,
     getCoreRowModel: getCoreRowModel(),
@@ -221,37 +216,27 @@ const UserListTable = ({ tableData }) => {
     getFacetedMinMaxValues: getFacetedMinMaxValues()
   })
 
-  const getAvatar = params => {
-    const { avatar, fullName } = params
-
-    if (avatar) {
-      return <CustomAvatar src={avatar} skin='light' size={34} />
-    } else {
-      return (
-        <CustomAvatar skin='light' size={34}>
-          {getInitials(fullName)}
-        </CustomAvatar>
-      )
-    }
-  }
-
   return (
     <>
       <Card>
-        <CardHeader title='Filters' />
-     
+        <CardHeader title='Services List' className='pbe-4' />
         <Divider />
-        <div className='flex justify-between p-5 gap-4 flex-col items-start sm:flex-row sm:items-center'>
-         <div></div>
-          <div className='flex items-center gap-x-4 gap-4 flex-col max-sm:is-full sm:flex-row'>
-            <DebouncedInput
-              value={globalFilter ?? ''}
-              onChange={value => setGlobalFilter(String(value))}
-              placeholder='Search User'
-              className='max-sm:is-full'
-            />
-            <Button variant='contained' onClick={() => setAddUserOpen(!addUserOpen)} className='max-sm:is-full'>
-              Add New Employee
+        <div className='flex justify-between flex-col items-start sm:flex-row sm:items-center gap-y-4 p-5'>
+          <DebouncedInput
+            value={globalFilter ?? ''}
+            onChange={value => setGlobalFilter(String(value))}
+            placeholder='Search Service'
+            className='max-sm:is-full'
+          />
+          <div className='flex items-center max-sm:flex-col gap-4 max-sm:is-full is-auto'>
+            <Button
+              variant='contained'
+              component={Link}
+              href={getLocalizedUrl('/apps/business/products/add', locale)}
+              startIcon={<i className='ri-add-line' />}
+              className='max-sm:is-full is-auto'
+            >
+              Add Service
             </Button>
           </div>
         </div>
@@ -263,21 +248,19 @@ const UserListTable = ({ tableData }) => {
                   {headerGroup.headers.map(header => (
                     <th key={header.id}>
                       {header.isPlaceholder ? null : (
-                        <>
-                          <div
-                            className={classnames({
-                              'flex items-center': header.column.getIsSorted(),
-                              'cursor-pointer select-none': header.column.getCanSort()
-                            })}
-                            onClick={header.column.getToggleSortingHandler()}
-                          >
-                            {flexRender(header.column.columnDef.header, header.getContext())}
-                            {{
-                              asc: <i className='ri-arrow-up-s-line text-xl' />,
-                              desc: <i className='ri-arrow-down-s-line text-xl' />
-                            }[header.column.getIsSorted()] ?? null}
-                          </div>
-                        </>
+                        <div
+                          className={classnames({
+                            'flex items-center': header.column.getIsSorted(),
+                            'cursor-pointer select-none': header.column.getCanSort()
+                          })}
+                          onClick={header.column.getToggleSortingHandler()}
+                        >
+                          {flexRender(header.column.columnDef.header, header.getContext())}
+                          {{
+                            asc: <i className='ri-arrow-up-s-line text-xl' />,
+                            desc: <i className='ri-arrow-down-s-line text-xl' />
+                          }[header.column.getIsSorted()] ?? null}
+                        </div>
                       )}
                     </th>
                   ))}
@@ -310,6 +293,19 @@ const UserListTable = ({ tableData }) => {
             )}
           </table>
         </div>
+        <Divider />
+        <div className='flex justify-end flex-col items-start sm:flex-row sm:items-center gap-y-4 p-5'>
+          <div className='flex items-center max-sm:flex-col gap-4 max-sm:is-full is-auto'>
+            <Button
+              variant='contained'
+              onClick={()=>{saveEmployeeServices(data)}}
+              className='max-sm:is-full is-auto'
+            >
+              Save
+            </Button>
+          </div>
+        </div>
+
         <TablePagination
           rowsPerPageOptions={[10, 25, 50]}
           component='div'
@@ -317,23 +313,16 @@ const UserListTable = ({ tableData }) => {
           count={table.getFilteredRowModel().rows.length}
           rowsPerPage={table.getState().pagination.pageSize}
           page={table.getState().pagination.pageIndex}
-          SelectProps={{
-            inputProps: { 'aria-label': 'rows per page' }
-          }}
           onPageChange={(_, page) => {
             table.setPageIndex(page)
           }}
           onRowsPerPageChange={e => table.setPageSize(Number(e.target.value))}
         />
+   
+       
       </Card>
-      <AddUserDrawer
-        open={addUserOpen}
-        handleClose={() => setAddUserOpen(!addUserOpen)}
-        userData={data}
-        setData={setData}
-      />
     </>
   )
 }
 
-export default UserListTable
+export default ProductListTableServices

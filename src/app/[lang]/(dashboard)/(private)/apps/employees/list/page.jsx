@@ -3,7 +3,7 @@
 
 import { getServerSession } from 'next-auth'
 
-import UserList from '@views/apps/user/list'
+import UserList from '@views/apps/employees/list'
 
 
 
@@ -53,7 +53,7 @@ import { authOptions } from '@/libs/auth'
         // Parse and return the JSON response
         const responseData = await res.json();
         
-        console.log('Employee Data:', responseData);
+        console.log('Employees Data:', responseData.data[0]);
   
         // Return the employee data (adjust depending on the structure of responseData)
         return responseData.data !== undefined ? responseData.data[0] : [];
@@ -61,7 +61,7 @@ import { authOptions } from '@/libs/auth'
       }
     } 
     catch (error) {
-      console.error('Error fetching employee data:', error);
+      console.error('Error fetching employees data:', error);
       
       return []; // Return null if an error occurs
     
