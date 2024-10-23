@@ -9,7 +9,7 @@ import Grid from '@mui/material/Grid'
 import { getServerSession } from 'next-auth'
 
 import { authOptions } from '@/libs/auth'
-// Component Imports
+
 import UserLeftOverview from '@views/apps/employees/view/user-left-overview'
 import UserRight from '@views/apps/employees/view/user-right'
 
@@ -76,12 +76,15 @@ const tabContentList = data => ({
     
     }
   };
-const UserViewTab = async () => {
+
+  const UserViewTab = async () => {
   // Vars
 
   const session = await getServerSession(authOptions())
 
+  
   let employeeData = await getEmployeeData(session.user.businessId,session.user.id,session.currentEmployeeId)
+  
   return (
     <Grid container spacing={6}>
       <Grid item xs={12} lg={4} md={5}>

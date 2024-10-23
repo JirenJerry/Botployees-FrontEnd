@@ -1,16 +1,28 @@
 'use client'
-
 import React, { useEffect, useState } from 'react'
-import Card from '@mui/material/Card'
-import Button from '@mui/material/Button'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
-import Typography from '@mui/material/Typography'
-import Link from '@components/Link'
-import useFacebookSDK from '@/utils/facebookSDK'
+
 import { useSession } from 'next-auth/react'
 
+import Card from '@mui/material/Card'
+
+import Button from '@mui/material/Button'
+
+import CardHeader from '@mui/material/CardHeader'
+
+import CardContent from '@mui/material/CardContent'
+
+
+import Typography from '@mui/material/Typography'
+
 import { toast } from 'react-toastify'
+
+import Link from '@components/Link'
+
+import useFacebookSDK from '@/utils/facebookSDK'
+
+
+
+
 import 'react-toastify/dist/ReactToastify.css'
 
 const FacebookWhatsAppAuth = () => {
@@ -25,28 +37,37 @@ const FacebookWhatsAppAuth = () => {
   const [buttonText, setButtonText] = useState('Log In With Facebook') // State for button text
 
   // Initialize the Facebook SDK
+
   useFacebookSDK(appId)
 
   // MessageEvent listener for storing session info
+
   useEffect(() => {
     const messageHandler = event => {
       if (event.origin !== 'https://www.facebook.com' && event.origin !== 'https://web.facebook.com') {
         return
       }
+      
       try {
         const data = JSON.parse(event.data)
+        
         if (data.type === 'WA_EMBEDDED_SIGNUP') {
+
           // If user finishes the Embedded Signup flow
+
           if (data.event === 'FINISH') {
             const { phone_number_id, waba_id } = data.data
-            setPhoneNumberId(phone_number_id) // Store phone number ID
-            setWabaId(waba_id) // Store WABA ID
+            
+            setPhoneNumberId(phone_number_id) 
+            setWabaId(waba_id) 
             console.log('Phone number ID:', phone_number_id, 'WhatsApp business account ID:', waba_id)
           } else if (data.event === 'CANCEL') {
             const { current_step } = data.data
+            
             console.warn('Cancelled at:', current_step)
           } else if (data.event === 'ERROR') {
             const { error_message } = data.data
+            
             console.error('Error:', error_message)
           }
         }
@@ -65,6 +86,7 @@ const FacebookWhatsAppAuth = () => {
   const fbLoginCallback = response => {
     if (response.authResponse) {
       const code = response.authResponse.code
+      
       setResponseCode(code) // Set the responseCode state
       setIsButtonDisabled(true) // Disable the button when login starts
     }
@@ -74,6 +96,7 @@ const FacebookWhatsAppAuth = () => {
   const createChannel = async channelData => {
     if (!session || !session.user) {
       console.error('User session is not available')
+      
       return
     }
 
@@ -82,6 +105,7 @@ const FacebookWhatsAppAuth = () => {
       const userId = session.user.id // Assuming userId is part of session data
 
       const credentials = btoa(`${userId}@${businessId}`)
+      
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/assistants/asst_7I5qc10Ya0HcZojj70BDqmVB/channels`, {
         method: 'PATCH',
         headers: {
@@ -100,10 +124,12 @@ const FacebookWhatsAppAuth = () => {
       }
 
       const responseData = await res.json()
+      
       console.log(responseData)
     } catch (error) {
       
       setIsButtonDisabled(false) // Re-enable the button if there's an error
+      
       throw error
     }
   }
@@ -117,6 +143,7 @@ const FacebookWhatsAppAuth = () => {
         WABA_ID: wabaId,
         phone_number_id: phoneNumberId
       }
+      
       toast.promise(
         createChannel(channelData),
         {

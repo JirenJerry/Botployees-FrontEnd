@@ -125,9 +125,12 @@ export const authOptions = (req, res) => {
 
           token.currentEmployeeId = session.currentEmployeeId
         }
+        
         if (account) {
           token.accessToken = account.access_token
+        
         }
+        
         if (profile) {
           /*
            * For adding custom parameters to user in session, we first need to add those parameters
@@ -150,7 +153,9 @@ export const authOptions = (req, res) => {
       
         if (session.user && userInfo) {
           if (userInfo.sub) {
+            
             let userDB = await prisma.user.findUnique({ where: { id: userInfo.sub } })
+            
             userDB.sub = userDB.id
             userInfo = userDB
           }

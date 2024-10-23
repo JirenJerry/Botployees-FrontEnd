@@ -26,7 +26,7 @@ const UserDetails = employeeData => {
     color,
     variant
   })
-  console.log(employeeData)
+
   return (
     <Card>
       <CardContent className='flex flex-col pbs-12 gap-6'>

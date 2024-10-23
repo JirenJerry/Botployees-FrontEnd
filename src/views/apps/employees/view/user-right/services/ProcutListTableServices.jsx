@@ -89,9 +89,13 @@ const ProductListTableServices = ({ productData }) => {
       const filteredData = servicesData.filter(item => 
         item.hasOwnProperty('acceptService') || item.hasOwnProperty('deniesService')
     );
+    
     const servicesId = filteredData.map(product => product._id)
+    
     console.log(servicesId)
+
   }
+  
   const handleAcceptChange = rowId => {
     setTimeout(() => {
       setData(prevData =>

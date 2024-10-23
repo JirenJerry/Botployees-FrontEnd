@@ -46,10 +46,13 @@ const createProduct = async (productData, userId, businessId) => {
     console.log(error)
   }
 }
+
 const ECommerceProductsAdd = () => {
   const { data: session } = useSession() // Get session data
   const userId = session?.user?.id // Access userId from session
+  
   const businessId = session?.user?.businessId //
+  
   const [productDetails, setProductDetails] = useState({
     name: '',
     description: '', // Ensure this is included
