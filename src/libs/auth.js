@@ -83,6 +83,7 @@ export const authOptions = (req, res) => {
             , email: profile.email
             , image: profile.picture
             , name: profile.name
+            , currentPlan : profile.currentPlan ?? "basicPlan"
           }
         }
       })
@@ -131,7 +132,7 @@ export const authOptions = (req, res) => {
         
         }
         
-        if (profile) {
+        if (profile) { 
           /*
            * For adding custom parameters to user in session, we first need to add those parameters
            * in token which then will be available in the `session()` callback
