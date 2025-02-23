@@ -172,7 +172,7 @@ export const authOptions = (req, res) => {
 
 
         }
-
+        
         return session
       }
     }

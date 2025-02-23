@@ -3,6 +3,9 @@
 // React Imports
 import { useEffect, useRef, useState } from 'react'
 
+// next-auth imports
+import { useSession } from 'next-auth/react'
+
 // MUI Imports
 import Backdrop from '@mui/material/Backdrop'
 import useMediaQuery from '@mui/material/useMediaQuery'
@@ -12,7 +15,7 @@ import classNames from 'classnames'
 import { useDispatch, useSelector } from 'react-redux'
 
 // Slice Imports
-import { getActiveUserData } from '@/redux-store/slices/chat'
+import { getActiveUserData, fetchChatData } from '@/redux-store/slices/chat'
 
 // Component Imports
 import SidebarLeft from './SidebarLeft'
@@ -25,6 +28,9 @@ import { useSettings } from '@core/hooks/useSettings'
 import { commonLayoutClasses } from '@layouts/utils/layoutClasses'
 
 const ChatWrapper = () => {
+  // Get session from next-auth. businessId is expected to be stored in session.user.businessId.
+  const { data: session, status } = useSession()
+
   // States
   const [backdropOpen, setBackdropOpen] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -40,6 +46,13 @@ const ChatWrapper = () => {
   const isBelowMdScreen = useMediaQuery(theme => theme.breakpoints.down('md'))
   const isBelowSmScreen = useMediaQuery(theme => theme.breakpoints.down('sm'))
 
+  // When the session is ready, dispatch the thunk with the entire session object.
+  useEffect(() => {
+    if (status === 'authenticated' && session?.user) {
+      dispatch(fetchChatData(session))
+    }
+  }, [dispatch, session])
+
   // Get active user’s data
   const activeUser = id => {
     dispatch(getActiveUserData(id))
@@ -47,7 +60,7 @@ const ChatWrapper = () => {
 
   // Focus on message input when active user changes
   useEffect(() => {
-    if (chatStore.activeUser?.id !== null && messageInputRef.current) {
+    if (chatStore.activeUser?.id && messageInputRef.current) {
       messageInputRef.current.focus()
     }
   }, [chatStore.activeUser])
@@ -57,31 +70,32 @@ const ChatWrapper = () => {
     if (!isBelowMdScreen && backdropOpen && sidebarOpen) {
       setBackdropOpen(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isBelowMdScreen])
+  }, [isBelowMdScreen, backdropOpen, sidebarOpen])
 
   // Open backdrop when sidebar is open on below sm screen
   useEffect(() => {
     if (!isBelowSmScreen && sidebarOpen) {
       setBackdropOpen(true)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isBelowSmScreen])
+  }, [isBelowSmScreen, sidebarOpen])
 
   // Close sidebar when backdrop is closed on below md screen
   useEffect(() => {
     if (!backdropOpen && sidebarOpen) {
       setSidebarOpen(false)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [backdropOpen])
+  }, [backdropOpen, sidebarOpen])
 
   return (
     <div
-      className={classNames(commonLayoutClasses.contentHeightFixed, 'flex is-full overflow-hidden rounded relative', {
-        border: settings.skin === 'bordered',
-        'shadow-md': settings.skin !== 'bordered'
-      })}
+      className={classNames(
+        commonLayoutClasses.contentHeightFixed,
+        'flex is-full overflow-hidden rounded relative',
+        {
+          border: settings.skin === 'bordered',
+          'shadow-md': settings.skin !== 'bordered'
+        }
+      )}
     >
       <SidebarLeft
         chatStore={chatStore}
@@ -109,7 +123,7 @@ const ChatWrapper = () => {
         messageInputRef={messageInputRef}
       />
 
-      <Backdrop open={backdropOpen} onClick={() => setBackdropOpen(false)} className='absolute z-10' />
+      <Backdrop open={backdropOpen} onClick={() => setBackdropOpen(false)} className="absolute z-10" />
     </div>
   )
 }

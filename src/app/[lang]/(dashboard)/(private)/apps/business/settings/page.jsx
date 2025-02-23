@@ -31,7 +31,7 @@ const getBusinessData = async (businessId, userId) => {
       }
 
       let responseData= await res.json();  // Parse and return the JSON response
-
+      
       return responseData.data[0]
 
     }
@@ -48,6 +48,7 @@ const businessSettings = async () => {
   
   let businessData = await getBusinessData(session?.user?.businessId,session?.user?.id)
  
+  console.log(businessData)
   
   return <Settings session={session}  initialBusinessData={businessData} />
 }

@@ -98,17 +98,7 @@ const UserProfileLeft = props => {
               <FormLabel id='status-radio-buttons-group-label' className='uppercase text-textDisabled'>
                 Status
               </FormLabel>
-              <RadioGroup
-                value={profileUserData.status}
-                name='radio-buttons-group'
-                onChange={handleUserStatus}
-                aria-labelledby='status-radio-buttons-group-label'
-              >
-                <FormControlLabel value='online' control={<Radio color='success' />} label='Online' />
-                <FormControlLabel value='away' control={<Radio color='warning' />} label='Away' />
-                <FormControlLabel value='busy' control={<Radio color='error' />} label='Do not disturb' />
-                <FormControlLabel value='offline' control={<Radio color='secondary' />} label='Offline' />
-              </RadioGroup>
+          
             </div>
             <div className='flex flex-col gap-1'>
               <Typography className='uppercase' color='text.disabled'>

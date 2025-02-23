@@ -1,544 +1,266 @@
 const previousDay = new Date(new Date().getTime() - 24 * 60 * 60 * 1000)
 const dayBeforePreviousDay = new Date(new Date().getTime() - 24 * 60 * 60 * 1000 * 2)
 
-export const db = {
-  profileUser: {
-    id: 1,
-    avatar: '/images/avatars/1.png',
-    fullName: 'John Doe',
-    role: 'Admin',
-    about:
-      'Dessert chocolate cake lemon drops jujubes. Biscuit cupcake ice cream bear claw brownie brownie marshmallow.',
-    status: 'online',
-    settings: {
-      isTwoStepAuthVerificationEnabled: true,
-      isNotificationsOn: false
-    }
-  },
-  contacts: [
-    {
-      id: 2,
-      fullName: 'Felecia Rower',
-      role: 'Frontend Developer',
-      about: 'Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing',
-      avatar: '/images/avatars/2.png',
-      status: 'offline'
-    },
-    {
-      id: 3,
-      fullName: 'Adalberto Granzin',
-      role: 'UI/UX Designer',
-      avatarColor: 'primary',
-      about:
-        'Toffee caramels jelly-o tart gummi bears cake I love ice cream lollipop. Sweet liquorice croissant candy danish dessert icing. Cake macaroon gingerbread toffee sweet.',
-      status: 'busy'
-    },
-    {
-      id: 4,
-      fullName: 'Joaquina Weisenborn',
-      role: 'Town planner',
-      about:
-        'Soufflé soufflé caramels sweet roll. Jelly lollipop sesame snaps bear claw jelly beans sugar plum sugar plum.',
-      avatar: '/images/avatars/8.png',
-      status: 'busy'
-    },
-    {
-      id: 5,
-      fullName: 'Margot Henschke',
-      role: 'Dietitian',
-      avatarColor: 'success',
-      about: 'Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing',
-      status: 'busy'
-    },
-    {
-      id: 6,
-      avatarColor: 'warning',
-      fullName: 'Bridgett Omohundro',
-      role: 'Designer, television/film set',
-      about:
-        'Gummies gummi bears I love candy icing apple pie I love marzipan bear claw. I love tart biscuit I love candy canes pudding chupa chups liquorice croissant.',
-      status: 'offline'
-    },
-    {
-      id: 7,
-      fullName: 'Sal Piggee',
-      role: 'Marketing executive',
-      about:
-        'Toffee caramels jelly-o tart gummi bears cake I love ice cream lollipop. Sweet liquorice croissant candy danish dessert icing. Cake macaroon gingerbread toffee sweet.',
-      avatarColor: 'info',
-      status: 'online'
-    },
-    {
-      id: 8,
-      fullName: 'Miguel Guelff',
-      role: 'Special educational needs teacher',
-      about:
-        'Biscuit powder oat cake donut brownie ice cream I love soufflé. I love tootsie roll I love powder tootsie roll.',
-      avatar: '/images/avatars/7.png',
-      status: 'online'
-    },
-    {
-      id: 9,
-      fullName: 'Mauro Elenbaas',
-      role: 'Advertising copywriter',
-      about:
-        'Bear claw ice cream lollipop gingerbread carrot cake. Brownie gummi bears chocolate muffin croissant jelly I love marzipan wafer.',
-      avatarColor: 'success',
-      status: 'away'
-    },
-    {
-      id: 10,
-      avatarColor: 'error',
-      fullName: 'Zenia Jacobs',
-      role: 'Building surveyor',
-      about: 'Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing',
-      status: 'away'
-    },
-    {
-      id: 11,
-      fullName: 'Ramonita Veras',
-      role: 'CEO',
-      about:
-        'Toffee caramels jelly-o tart gummi bears cake I love ice cream lollipop. Sweet liquorice croissant candy danish dessert icing. Cake macaroon gingerbread toffee sweet.',
-      avatar: '/images/avatars/4.png',
-      status: 'online'
-    },
-    {
-      id: 12,
-      fullName: 'Lashawna Gotschall',
-      role: 'Therapist, sports',
-      about:
-        'Soufflé soufflé caramels sweet roll. Jelly lollipop sesame snaps bear claw jelly beans sugar plum sugar plum.',
-      avatarColor: 'info',
-      status: 'online'
-    },
-    {
-      id: 13,
-      fullName: 'Rosalva Uyetake',
-      role: 'Engineer, civil (consulting)',
-      about:
-        'Chupa chups candy canes chocolate bar marshmallow liquorice muffin. Lemon drops oat cake tart liquorice tart cookie. Jelly-o cookie tootsie roll halvah.',
-      avatar: '/images/avatars/6.png',
-      status: 'offline'
-    },
-    {
-      id: 14,
-      fullName: 'Cecilia Shockey',
-      role: 'Database administrator',
-      about: 'Cake pie jelly jelly beans. Marzipan lemon drops halvah cake. Pudding cookie lemon drops icing',
-      avatarColor: 'secondary',
-      status: 'busy'
-    },
-    {
-      id: 15,
-      fullName: 'Harriett Duropan',
-      role: 'Therapist, sports',
-      about:
-        'Toffee caramels jelly-o tart gummi bears cake I love ice cream lollipop. Sweet liquorice croissant candy danish dessert icing. Cake macaroon gingerbread toffee sweet.',
-      avatar: '/images/avatars/5.png',
-      status: 'online'
-    },
-    {
-      id: 16,
-      fullName: 'Lauran Starner',
-      role: 'AI specialist',
-      about:
-        'Soufflé soufflé caramels sweet roll. Jelly lollipop sesame snaps bear claw jelly beans sugar plum sugar plum.',
-      avatarColor: 'warning',
-      status: 'online'
-    },
-    {
-      id: 17,
-      fullName: 'Verla Morgano',
-      role: 'Data scientist',
-      about:
-        'Chupa chups candy canes chocolate bar marshmallow liquorice muffin. Lemon drops oat cake tart liquorice tart cookie. Jelly-o cookie tootsie roll halvah.',
-      avatar: '/images/avatars/3.png',
-      status: 'online'
-    }
-  ],
-  chats: [
-    {
-      id: 1,
-      userId: 2,
-      unseenMsgs: 1,
-      chat: [
-        {
-          message: "How can we help? We're here for you!",
-          time: 'Mon Dec 10 2018 07:45:00 GMT+0000 (GMT)',
-          senderId: 1,
-          msgStatus: {
-            isSent: true,
-            isDelivered: true,
-            isSeen: true
-          }
-        },
-        {
-          message: 'Hey John, I am looking for the best admin template. Could you please help me to find it out?',
-          time: 'Mon Dec 10 2018 07:45:23 GMT+0000 (GMT)',
-          senderId: 2
-        },
-        {
-          message: 'It should be MUI v5 compatible.',
-          time: 'Mon Dec 10 2018 07:45:55 GMT+0000 (GMT)',
-          senderId: 2,
-          msgStatus: {
-            isSent: true,
-            isDelivered: true,
-            isSeen: true
-          }
-        },
-        {
-          message: 'Absolutely!',
-          time: 'Mon Dec 10 2018 07:46:00 GMT+0000 (GMT)',
-          senderId: 1,
-          msgStatus: {
-            isSent: true,
-            isDelivered: true,
-            isSeen: true
-          }
-        },
-        {
-          message: 'This admin template is built with MUI!',
-          time: 'Mon Dec 10 2018 07:46:05 GMT+0000 (GMT)',
-          senderId: 1,
-          msgStatus: {
-            isSent: true,
-            isDelivered: true,
-            isSeen: true
-          }
-        },
-        {
-          message: 'Looks clean and fresh UI. 😍',
-          time: 'Mon Dec 10 2018 07:46:23 GMT+0000 (GMT)',
-          senderId: 2
-        },
-        {
-          message: "It's perfect for my next project.",
-          time: 'Mon Dec 10 2018 07:46:33 GMT+0000 (GMT)',
-          senderId: 2
-        },
-        {
-          message: 'How can I purchase it?',
-          time: 'Mon Dec 10 2018 07:46:43 GMT+0000 (GMT)',
-          senderId: 2
-        },
-        {
-          message: 'Thanks, From our official site  😇',
-          time: 'Mon Dec 10 2018 07:46:53 GMT+0000 (GMT)',
-          senderId: 1,
-          msgStatus: {
-            isSent: true,
-            isDelivered: true,
-            isSeen: true
-          }
-        },
-        {
-          message: 'I will purchase it for sure. 👍',
-          time: previousDay,
-          senderId: 2
+export const db =      {
+    "profileUser": {
+        "id": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+        "avatar": "/images/avatars/robot.png",
+        "fullName": "Assistant placeholder name",
+        "role": "Admin",
+        "about": "Assistant description placeholder",
+        "status": "online",
+        "settings": {
+            "isTwoStepAuthVerificationEnabled": true,
+            "isNotificationsOn": false
         }
-      ]
     },
-    {
-      id: 2,
-      userId: 3,
-      unseenMsgs: 0,
-      chat: [
+    "contacts": [
         {
-          message: 'Hi',
-          time: 'Mon Dec 10 2018 07:45:00 GMT+0000 (GMT)',
-          senderId: 1,
-          msgStatus: {
-            isSent: true,
-            isDelivered: true,
-            isSeen: true
-          }
+            "id": "testUser",
+            "fullName": "testUser",
+            "role": "Frontend Developer",
+            "about": "Brief info about contact...",
+            "avatar": "/images/avatars/2.png",
+            "status": "offline"
         },
         {
-          message: 'Hello. How can I help You?',
-          time: 'Mon Dec 11 2018 07:45:15 GMT+0000 (GMT)',
-          senderId: 3
+            "id": "50687870617",
+            "fullName": "50687870617",
+            "role": "Frontend Developer",
+            "about": "Brief info about contact...",
+            "avatar": "/images/avatars/2.png",
+            "status": "offline"
         },
         {
-          message: 'Can I get details of my last transaction I made last month? 🤔',
-          time: 'Mon Dec 11 2018 07:46:10 GMT+0000 (GMT)',
-          senderId: 1,
-          msgStatus: {
-            isSent: true,
-            isDelivered: true,
-            isSeen: true
-          }
-        },
-        {
-          message: 'We need to check if we can provide you such information.',
-          time: 'Mon Dec 11 2018 07:45:15 GMT+0000 (GMT)',
-          senderId: 3
-        },
-        {
-          message: 'I will inform you as I get update on this.',
-          time: 'Mon Dec 11 2018 07:46:15 GMT+0000 (GMT)',
-          senderId: 3
-        },
-        {
-          message: 'If it takes long you can mail me at my mail address.',
-          time: dayBeforePreviousDay,
-          senderId: 1,
-          msgStatus: {
-            isSent: true,
-            isDelivered: false,
-            isSeen: false
-          }
+            "id": "50672763067",
+            "fullName": "Jerry Rivera",
+            "role": "Frontend Developer",
+            "about": "Brief info about contact...",
+            "avatar": "/images/avatars/2.png",
+            "status": "offline"
         }
-      ]
-    },
-    {
-      id: 3,
-      userId: 10,
-      unseenMsgs: 0,
-      chat: [
+    ],
+    "chats": [
         {
-          message: 'Hello, I am a building surveyor and I would like to schedule a survey for your building.',
-          time: 'Mon Dec 13 2021 11:00:00 GMT+0000 (GMT)',
-          senderId: 10
+            "id": "thread_WR7KCOpv8fMua7AKt1Oj9653",
+            "userId": "testUser",
+            "unseenMsgs": 0,
+            "chat": [
+                {
+                    "message": "hola",
+                    "senderId": "testUser",
+                    "time": "Sat Feb 15 2025 20:56:33 GMT-0600 (CST)"
+                },
+                {
+                    "message": "¡Hola! 👋 Bienvenido a \"Barberia Rio Sarchi\". Soy una inteligencia artificial aquí para ayudarte. ¿En qué puedo asistirte hoy? 😊",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sat Feb 15 2025 20:56:38 GMT-0600 (CST)"
+                },
+                {
+                    "message": "quiero agendar una cita",
+                    "senderId": "testUser",
+                    "time": "Sat Feb 15 2025 20:56:49 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Claro, puedo ayudarte a agendar una cita. 🗓️\n\nPrimero, necesito saber el motivo de tu cita. Por ejemplo, si necesitas un corte de cabello o algún otro servicio específico. ¡Cuéntame! 😊",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sat Feb 15 2025 20:56:51 GMT-0600 (CST)"
+                },
+                {
+                    "message": "corte de cabello, seria para el martes ",
+                    "senderId": "testUser",
+                    "time": "Sat Feb 15 2025 20:57:11 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Perfecto, entonces para el corte de cabello. 🥳\n\n¿Cuál es la fecha exacta del martes que mencionas? 😊",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sat Feb 15 2025 20:57:13 GMT-0600 (CST)"
+                },
+                {
+                    "message": "este martes",
+                    "senderId": "testUser",
+                    "time": "Sat Feb 15 2025 20:57:22 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Este martes es el 18 de febrero de 2025. ✨ \n\nDéjame verificar la disponibilidad para esa fecha. Un momento, por favor. ",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sat Feb 15 2025 20:57:24 GMT-0600 (CST)"
+                },
+                {
+                    "message": "ok",
+                    "senderId": "testUser",
+                    "time": "Sat Feb 15 2025 20:58:05 GMT-0600 (CST)"
+                },
+                {
+                    "message": "¡Genial! 🎉 Hay disponibilidad para el martes 18 de febrero de 2025, en los siguientes horarios:\n\nDe 09:00 a 16:30. 🕘\n\nPor favor, elige un horario específico dentro de esos rangos para tu corte de cabello. 😊",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sat Feb 15 2025 20:58:15 GMT-0600 (CST)"
+                },
+                {
+                    "message": "ok a las 9 am",
+                    "senderId": "testUser",
+                    "time": "Sat Feb 15 2025 20:59:05 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Perfecto, has elegido el martes 18 de febrero de 2025, a las 9:00 a.m. para tu corte de cabello. ✂️\n\nAhora, por favor, necesito que me proporciones tu dirección de correo electrónico y número de teléfono. Si ya los has proporcionado antes, puedo usar esos valores. ¿Te gustaría proceder con los valores anteriores? 😊",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sat Feb 15 2025 20:59:07 GMT-0600 (CST)"
+                },
+                {
+                    "message": "mi correo es riverderio@gmail.com 72763067",
+                    "senderId": "testUser",
+                    "time": "Sat Feb 15 2025 20:59:18 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Parece que ya tienes una cita programada para el **17 de febrero de 2025 a las 9:00 a.m.**. Por política de la barbería, solo se puede tener una cita activa a la vez. \n\n¿Te gustaría cancelar esa cita para poder agendar la nueva? 😊✂️",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sat Feb 15 2025 20:59:25 GMT-0600 (CST)"
+                },
+                {
+                    "message": "no, ya hable con el encargado y la cancelo, agendala de nuevo",
+                    "senderId": "testUser",
+                    "time": "Sat Feb 15 2025 21:01:03 GMT-0600 (CST)"
+                },
+                {
+                    "message": "¡Tu cita ha sido agendada exitosamente! 🎉 \n\n**Detalles de la cita:**\n- **Fecha:** Martes, 18 de febrero de 2025\n- **Hora:** 9:00 a.m.\n- **Empleado:** Up Army\n- **Razón:** Corte de cabello\n- **Contraseña:** CMGGX (necesaria para la cita)\n\nRecibirás una notificación a tu correo electrónico. Si necesitas algo más, ¡no dudes en decírmelo! 😊✂️",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sat Feb 15 2025 21:01:17 GMT-0600 (CST)"
+                }
+            ]
         },
         {
-          message: 'Sure, could you please provide more details about the survey?',
-          time: 'Mon Dec 13 2021 11:01:00 GMT+0000 (GMT)',
-          senderId: 1
+            "id": "thread_HYIuVm3M3R0FbDRXVqhXDP1F",
+            "userId": "50687870617",
+            "unseenMsgs": 0,
+            "chat": [
+                {
+                    "message": "Buenas",
+                    "senderId": "50687870617",
+                    "time": "Sun Feb 16 2025 16:08:06 GMT-0600 (CST)"
+                },
+                {
+                    "message": "¡Hola! ¿En qué puedo ayudarte hoy?",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sun Feb 16 2025 16:08:08 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Quiero sacar una cita",
+                    "senderId": "50687870617",
+                    "time": "Sun Feb 16 2025 16:08:28 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Claro, puedo ayudarte con eso. Para empezar, ¿me puedes decir el motivo de la cita?",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sun Feb 16 2025 16:08:29 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Corte de pelo",
+                    "senderId": "50687870617",
+                    "time": "Sun Feb 16 2025 16:09:43 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Perfecto, para programar tu cita para un corte de pelo, ¿qué día tienes en mente?",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sun Feb 16 2025 16:09:45 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Lunes a las 2pm",
+                    "senderId": "50687870617",
+                    "time": "Sun Feb 16 2025 16:11:32 GMT-0600 (CST)"
+                },
+                {
+                    "message": "El próximo lunes es el 19 de febrero. Te refieres a esa fecha, ¿verdad?",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sun Feb 16 2025 16:11:34 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Sí",
+                    "senderId": "50687870617",
+                    "time": "Sun Feb 16 2025 16:12:45 GMT-0600 (CST)"
+                },
+                {
+                    "message": "El lunes 19 de febrero hay disponibilidad para el corte de pelo con Up Army, quien se encargará de tu cita. Puedes elegir entre las siguientes horas: de 9:00 AM a 4:30 PM. \n\nDado que querías a las 2:00 PM, está disponible esa hora. ¿Te gustaría confirmar la cita a las 2:00 PM?",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sun Feb 16 2025 16:12:57 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Sí",
+                    "senderId": "50687870617",
+                    "time": "Sun Feb 16 2025 16:13:21 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Perfecto, he reservado la cita para el corte de pelo con Up Army el lunes 19 de febrero a las 2:00 PM. \n\nAhora, necesitaré tu dirección de correo electrónico y tu número de teléfono para completar la programación de la cita. Si ya has proporcionado esta información antes, por favor confirma si deseas usar los mismos datos.",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sun Feb 16 2025 16:13:30 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Hola",
+                    "senderId": "50687870617",
+                    "time": "Sun Feb 16 2025 19:29:34 GMT-0600 (CST)"
+                },
+                {
+                    "message": "¡Hola! Para completar la programación de tu cita, necesito tu dirección de correo electrónico y tu número de teléfono. ¿Puedes proporcionarlos, por favor?",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sun Feb 16 2025 19:29:36 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Quiero agregar una cita",
+                    "senderId": "50687870617",
+                    "time": "Sun Feb 16 2025 19:30:19 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Para agregar una nueva cita, necesitaré saber el motivo de la cita y la fecha y hora que prefieres. ¿Cuál es tu solicitud?",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sun Feb 16 2025 19:30:22 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Corte\nLunes \n20m",
+                    "senderId": "50687870617",
+                    "time": "Sun Feb 16 2025 19:32:16 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Para el corte el lunes 20 de febrero, necesito confirmar que te refieres a esa fecha. ¿Puedes confirmar que deseas la cita para el lunes 20 de febrero?",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sun Feb 16 2025 19:32:18 GMT-0600 (CST)"
+                },
+                {
+                    "message": "No existe el lunes 20 de febrero",
+                    "senderId": "50687870617",
+                    "time": "Sun Feb 16 2025 19:32:48 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Mis disculpas, el lunes 20 de febrero no existe. El próximo lunes es el 19 de febrero. ¿Te gustaría programar tu cita de corte para esa fecha?",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sun Feb 16 2025 19:32:50 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Es lunes 17",
+                    "senderId": "50687870617",
+                    "time": "Sun Feb 16 2025 19:33:23 GMT-0600 (CST)"
+                },
+                {
+                    "message": "Lo siento por la confusión, pero el próximo lunes es 19 de febrero. Si deseas la cita para ese día, por favor házmelo saber.",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Sun Feb 16 2025 19:33:25 GMT-0600 (CST)"
+                }
+            ]
         },
         {
-          message:
-            'The survey will include a thorough inspection of the building to assess its condition and identify any potential issues.',
-          time: 'Mon Dec 13 2021 11:02:00 GMT+0000 (GMT)',
-          senderId: 10
-        },
-        {
-          message: 'Okay, when do you plan to conduct the survey?',
-          time: 'Mon Dec 13 2021 11:03:00 GMT+0000 (GMT)',
-          senderId: 1
-        },
-        {
-          message: 'I am available to conduct the survey next week. Does that work for you?',
-          time: 'Mon Dec 13 2021 11:04:00 GMT+0000 (GMT)',
-          senderId: 10
-        },
-        {
-          message: "Yes, that works for me. Let's schedule it for next Wednesday.",
-          time: 'Mon Dec 13 2021 11:05:00 GMT+0000 (GMT)',
-          senderId: 1
-        },
-        {
-          message: 'Great. I will send you a confirmation email with the details.',
-          time: 'Mon Dec 13 2021 11:06:00 GMT+0000 (GMT)',
-          senderId: 10
-        },
-        {
-          message: 'Thank you, looking forward to it.',
-          time: 'Mon Dec 13 2021 11:07:00 GMT+0000 (GMT)',
-          senderId: 1
+            "id": "thread_AF2CEaMtpyB4eCW3tHSn4B7c",
+            "userId": "50672763067",
+            "unseenMsgs": 0,
+            "chat": [
+                {
+                    "message": "hola",
+                    "senderId": "50672763067",
+                    "time": "Fri Feb 21 2025 21:17:44 GMT-0600 (CST)"
+                },
+                {
+                    "message": "¡Hola! ¿En qué puedo ayudarte hoy?",
+                    "senderId": "asst_ArymJE1hA0IzPLk9VuWY43fy",
+                    "time": "Fri Feb 21 2025 21:17:47 GMT-0600 (CST)"
+                }
+            ]
         }
-      ]
-    },
-    {
-      id: 4,
-      userId: 8,
-      unseenMsgs: 0,
-      chat: [
-        {
-          message: 'Hello, I would like to arrange a professional meeting.',
-          time: 'Mon Dec 10 2018 07:45:00 GMT+0000 (GMT)',
-          senderId: 1,
-          msgStatus: {
-            isSent: true,
-            isDelivered: true,
-            isSeen: true
-          }
-        },
-        {
-          message: 'Sure, could you please provide more details about the meeting?',
-          time: 'Mon Dec 11 2018 07:45:15 GMT+0000 (GMT)',
-          senderId: 8
-        },
-        {
-          message: 'The meeting is about our next project plan.',
-          time: 'Mon Dec 11 2018 07:46:10 GMT+0000 (GMT)',
-          senderId: 1,
-          msgStatus: {
-            isSent: true,
-            isDelivered: true,
-            isSeen: true
-          }
-        },
-        {
-          message: 'Okay, I will prepare the necessary documents for the meeting.',
-          time: 'Mon Dec 11 2018 07:45:15 GMT+0000 (GMT)',
-          senderId: 8
-        },
-        {
-          message: 'Thank you, looking forward to it.',
-          time: 'Mon Dec 11 2018 07:46:15 GMT+0000 (GMT)',
-          senderId: 1
-        }
-      ]
-    },
-    {
-      id: 5,
-      userId: 16,
-      unseenMsgs: 0,
-      chat: [
-        {
-          message: 'Hey, have you heard about the new AI model GPT-4?',
-          time: 'Mon Dec 13 2021 09:00:00 GMT+0000 (GMT)',
-          senderId: 16
-        },
-        {
-          message: "No, I haven't. What's new about it?",
-          time: 'Mon Dec 13 2021 09:01:00 GMT+0000 (GMT)',
-          senderId: 1
-        },
-        {
-          message:
-            "It's supposed to be even more powerful and accurate than GPT-3. It can generate even more realistic text.",
-          time: 'Mon Dec 13 2021 09:02:00 GMT+0000 (GMT)',
-          senderId: 16
-        },
-        {
-          message: "That sounds interesting. I'll have to check it out.",
-          time: 'Mon Dec 13 2021 09:03:00 GMT+0000 (GMT)',
-          senderId: 1
-        }
-      ]
-    },
-    {
-      id: 6,
-      userId: 11,
-      unseenMsgs: 1,
-      chat: [
-        {
-          message: "Hey, have you thought about our company's future plans?",
-          time: 'Mon Dec 13 2021 10:00:00 GMT+0000 (GMT)',
-          senderId: 1
-        },
-        {
-          message: 'Yes, I have been thinking about it. We need to focus on AI and machine learning.',
-          time: 'Mon Dec 13 2021 10:01:00 GMT+0000 (GMT)',
-          senderId: 11
-        },
-        {
-          message: 'I agree. These technologies are the future. We should also consider investing in cloud computing.',
-          time: 'Mon Dec 13 2021 10:02:00 GMT+0000 (GMT)',
-          senderId: 1
-        },
-        {
-          message: 'Absolutely. Cloud computing will give us the flexibility and scalability we need.',
-          time: 'Mon Dec 13 2021 10:03:00 GMT+0000 (GMT)',
-          senderId: 11
-        },
-        {
-          message: 'We should also think about expanding our team. We will need more talent to achieve our goals.',
-          time: 'Mon Dec 13 2021 10:04:00 GMT+0000 (GMT)',
-          senderId: 1
-        },
-        {
-          message:
-            'Yes, hiring the right people is crucial. We should start looking for candidates as soon as possible.',
-          time: 'Mon Dec 13 2021 10:05:00 GMT+0000 (GMT)',
-          senderId: 11
-        },
-        {
-          message: "Great. Let's start working on a plan then.",
-          time: 'Mon Dec 13 2021 10:06:00 GMT+0000 (GMT)',
-          senderId: 1
-        },
-        {
-          message: "Sounds good. Let's do it.",
-          time: 'Mon Dec 13 2021 10:07:00 GMT+0000 (GMT)',
-          senderId: 11
-        }
-      ]
-    },
-    {
-      id: 7,
-      userId: 17,
-      unseenMsgs: 0,
-      chat: [
-        {
-          message:
-            'Hello, as a data scientist, I have been analyzing our user data and found some interesting patterns.',
-          time: 'Mon Dec 13 2021 12:00:00 GMT+0000 (GMT)',
-          senderId: 17
-        },
-        {
-          message: 'That sounds interesting. Could you please share more details?',
-          time: 'Mon Dec 13 2021 12:01:00 GMT+0000 (GMT)',
-          senderId: 1
-        },
-        {
-          message: 'Sure, our users are most active during the evening hours and they mostly use our app on weekends.',
-          time: 'Mon Dec 13 2021 12:02:00 GMT+0000 (GMT)',
-          senderId: 17
-        },
-        {
-          message: "That's valuable information. We can use this to schedule our app updates and maintenance work.",
-          time: 'Mon Dec 13 2021 12:03:00 GMT+0000 (GMT)',
-          senderId: 1
-        },
-        {
-          message: 'Exactly. We can also use this information to target our marketing campaigns.',
-          time: 'Mon Dec 13 2021 12:04:00 GMT+0000 (GMT)',
-          senderId: 17
-        },
-        {
-          message: 'Great work. Keep it up.',
-          time: 'Mon Dec 13 2021 12:05:00 GMT+0000 (GMT)',
-          senderId: 1
-        }
-      ]
-    },
-    {
-      id: 8,
-      userId: 14,
-      unseenMsgs: 1,
-      chat: [
-        {
-          message:
-            'Hello, as a database administrator, I have been monitoring our databases and I noticed a significant increase in the load.',
-          time: 'Mon Dec 13 2021 13:00:00 GMT+0000 (GMT)',
-          senderId: 14
-        },
-        {
-          message: "That's concerning. Do you have any idea what might be causing this?",
-          time: 'Mon Dec 13 2021 13:01:00 GMT+0000 (GMT)',
-          senderId: 1
-        },
-        {
-          message:
-            'I suspect it might be due to the recent increase in user registrations. I will investigate further and optimize our databases accordingly.',
-          time: 'Mon Dec 13 2021 13:02:00 GMT+0000 (GMT)',
-          senderId: 14
-        },
-        {
-          message: 'That sounds like a good plan. Let me know if you need any help.',
-          time: 'Mon Dec 13 2021 13:03:00 GMT+0000 (GMT)',
-          senderId: 1
-        },
-        {
-          message: 'Will do. I will keep you updated on the progress.',
-          time: 'Mon Dec 13 2021 13:04:00 GMT+0000 (GMT)',
-          senderId: 14
-        },
-        {
-          message: 'Thank you, I appreciate your efforts.',
-          time: 'Mon Dec 13 2021 13:05:00 GMT+0000 (GMT)',
-          senderId: 1
-        },
-        {
-          message: 'Your Welcome!😊',
-          time: 'Mon Dec 13 2021 13:06:00 GMT+0000 (GMT)',
-          senderId: 14
-        }
-      ]
-    }
-  ]
+    ]
 }
