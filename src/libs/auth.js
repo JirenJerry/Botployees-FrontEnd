@@ -142,6 +142,7 @@ export const authOptions = (req, res) => {
           token.name = profile.name
           token.role = profile.role || 'User'
           token.businessId = profile.businessId
+         
         }
 
         return token
@@ -170,7 +171,7 @@ export const authOptions = (req, res) => {
 
           session.currentEmployeeId = token.currentEmployeeId
 
-
+       
         }
         
         return session

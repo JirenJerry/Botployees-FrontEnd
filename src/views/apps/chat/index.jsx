@@ -48,17 +48,30 @@ const ChatWrapper = () => {
 
   // When the session is ready, dispatch the thunk with the entire session object.
   useEffect(() => {
+    let interval;
+  
     if (status === 'authenticated' && session?.user) {
-      dispatch(fetchChatData(session))
+      // Fetch data immediately
+      dispatch(fetchChatData(session));
+  
+  
+      interval = setInterval(() => {
+        dispatch(fetchChatData(session));
+      }, 20000);
     }
-  }, [dispatch, session])
-
-  // Get active user’s data
+  
+    return () => {
+      if (interval) {
+        clearInterval(interval); 
+      }
+    };
+  }, [dispatch, session, status]);
+ 
   const activeUser = id => {
     dispatch(getActiveUserData(id))
   }
 
-  // Focus on message input when active user changes
+  
   useEffect(() => {
     if (chatStore.activeUser?.id && messageInputRef.current) {
       messageInputRef.current.focus()
