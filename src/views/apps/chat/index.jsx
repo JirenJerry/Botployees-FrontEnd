@@ -57,7 +57,7 @@ const ChatWrapper = () => {
   
       interval = setInterval(() => {
         dispatch(fetchChatData(session));
-      }, 20000);
+      }, 5000);
     }
   
     return () => {
