@@ -35,7 +35,6 @@ export const authOptions = (req, res) => {
           const { email, password } = credentials
 
           try {
-
             // ** Login API Call to match the user credentials and receive user data in response along with his role
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/users/login`, {
               method: 'POST',
@@ -72,18 +71,23 @@ export const authOptions = (req, res) => {
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 
         authorization: {
-          params: { scope: 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email' }
+          params: {
+            prompt: 'consent',
+            access_type: 'offline',
+            response_type: 'code',
+            scope:
+              'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
+          }
         },
         async profile(profile) {
-
           return {
-            id: profile.sub
-            , role: profile.role ?? "User"
-            , businessId: profile.businessId
-            , email: profile.email
-            , image: profile.picture
-            , name: profile.name
-            , currentPlan : profile.currentPlan ?? "basicPlan"
+            id: profile.sub,
+            role: profile.role ?? 'User',
+            businessId: profile.businessId,
+            email: profile.email,
+            image: profile.picture,
+            name: profile.name,
+            currentPlan: profile.currentPlan ?? 'basicPlan'
           }
         }
       })
@@ -123,26 +127,22 @@ export const authOptions = (req, res) => {
        */
       async jwt({ token, account, user, profile, trigger, session }) {
         if (trigger === 'update' && session?.currentEmployeeId) {
-
           token.currentEmployeeId = session.currentEmployeeId
         }
-        
+
         if (account) {
           token.accessToken = account.access_token
-        
         }
-        
-        if (profile) { 
+
+        if (profile) {
           /*
            * For adding custom parameters to user in session, we first need to add those parameters
            * in token which then will be available in the `session()` callback
            */
 
-
           token.name = profile.name
           token.role = profile.role || 'User'
           token.businessId = profile.businessId
-         
         }
 
         return token
@@ -152,16 +152,14 @@ export const authOptions = (req, res) => {
 
       async session({ session, user, token, trigger, newSession }) {
         let userInfo = token
-      
+
         if (session.user && userInfo) {
           if (userInfo.sub) {
-            
             let userDB = await prisma.user.findUnique({ where: { id: userInfo.sub } })
-            
+
             userDB.sub = userDB.id
             userInfo = userDB
           }
-
 
           // ** Add custom params to user in session which are added in `jwt()` callback via `token` parameter
           session.user.name = userInfo.name
@@ -170,10 +168,8 @@ export const authOptions = (req, res) => {
           session.user.businessId = userInfo.businessId
 
           session.currentEmployeeId = token.currentEmployeeId
-
-       
         }
-        
+ 
         return session
       }
     }

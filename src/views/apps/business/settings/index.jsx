@@ -6,8 +6,6 @@ import { useState, useEffect, useRef } from 'react'
 // Next Imports
 import dynamic from 'next/dynamic'
 
-
-
 // next-auth imports
 import { useSession } from 'next-auth/react'
 
@@ -68,40 +66,37 @@ const saveBusinessData = async businessData => {
 const createBusiness = async (businessData, session) => {
   try {
     // Extract user information from the session
-    const credentials = btoa(`${session?.user?.id}@${session?.user?.businessId}`);
-    
-    // Log the session for debugging purposes
+    const credentials = btoa(`${session?.user?.id}@${session?.user?.businessId}`)
 
-    console.log(businessData);
-    
+  
+
     // Perform the API request
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/business`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${credentials}`, 
-        'Content-Type': 'application/json',       
+        Authorization: `Bearer ${credentials}`,
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ business: businessData })  
-    });
+      body: JSON.stringify({ business: businessData })
+    })
 
     // Check if the request was successful (status code 201)
-    
-    if (res.status === 201) {
-      toast.success('Business created successfully!');
-    } else {
-      const errorData = await res.json();
 
-      errorToast(`API error status: ${res.status} ${errorData}`);
+    if (res.status === 201) {
+      toast.success('Business created successfully!')
+    } else {
+      const errorData = await res.json()
+
+      errorToast(`API error status: ${res.status} ${errorData}`)
     }
   } catch (error) {
-
     // Handle errors during the API call
 
-    errorToast('Failed to create business!');
-    console.log(error);
+    errorToast('Failed to create business!')
+    console.log(error)
   }
-};
+}
 
 const Settings = ({ session: initialSession, initialBusinessData }) => {
   // States
@@ -109,7 +104,7 @@ const Settings = ({ session: initialSession, initialBusinessData }) => {
   const { data: sessionFromHook, update } = useSession()
   const [session, setSession] = useState(initialSession)
   const [businessData, setBusinessData] = useState(initialBusinessData || {})
-  const formSubmitRefs = useRef([]) 
+  const formSubmitRefs = useRef([])
 
   const handleFormSubmit = submitHandler => {
     formSubmitRefs.current.push(submitHandler)
@@ -142,30 +137,25 @@ const Settings = ({ session: initialSession, initialBusinessData }) => {
       ...updatedData
     }))
   }
-  
-  const handleSave = async () => {
-    
 
+  const handleSave = async () => {
     let allFormsValid = true
-    
+
     const formValidationPromises = formSubmitRefs.current.map(
       submitHandler =>
         new Promise(resolve => {
           submitHandler(
             async formData => {
-
               // Form is valid, resolve with true
 
-              resolve(true) 
-              
-              // Form passed validation
+              resolve(true)
 
+              // Form passed validation
             },
             errors => {
-
               // Form validation failed, resolve with false
 
-              resolve(false) 
+              resolve(false)
             }
           )()
         })
@@ -180,21 +170,15 @@ const Settings = ({ session: initialSession, initialBusinessData }) => {
     allFormsValid = validationResults.every(isValid => isValid === true)
 
     if (allFormsValid) {
-      
       // If all forms are valid, perform the save action
-      
+
       if (isDisabled) {
-
-        await createBusiness(businessData,session)
-        
+        await createBusiness(businessData, session)
       } else {
-
-        await saveBusinessData(businessData) 
-
+        await saveBusinessData(businessData)
       }
-      
-      await update()
 
+      await update()
     } else {
       console.error('One or more forms failed validation.')
     }

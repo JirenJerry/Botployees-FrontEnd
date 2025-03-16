@@ -16,7 +16,7 @@ const getBusinessData = async (businessId, userId) => {
   try {
     // Encode credentials in base64 for basic authentication
     const credentials = btoa(`${userId}@${businessId}`);
-
+    
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/v1/business`, {
       method: 'GET',
       headers: {
