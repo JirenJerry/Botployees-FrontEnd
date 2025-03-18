@@ -125,52 +125,100 @@ export const authOptions = (req, res) => {
        * the `session()` callback. So we have to add custom parameters in `token`
        * via `jwt()` callback to make them accessible in the `session()` callback
        */
-      async jwt({ token, account, user, profile, trigger, session }) {
+      async jwt({ token, account, profile, trigger, session }) {
         if (trigger === 'update' && session?.currentEmployeeId) {
-          token.currentEmployeeId = session.currentEmployeeId
+          token.currentEmployeeId = session.currentEmployeeId;
         }
-
+      
         if (account) {
-          token.accessToken = account.access_token
+          token.accessToken = account.access_token;
+         
+          token.refreshToken = account.refresh_token;
         }
-
+      
         if (profile) {
-          /*
-           * For adding custom parameters to user in session, we first need to add those parameters
-           * in token which then will be available in the `session()` callback
-           */
+          token.name = profile.name;
+          token.role = profile.role || 'User';
+          token.businessId = profile.businessId;
 
-          token.name = profile.name
-          token.role = profile.role || 'User'
-          token.businessId = profile.businessId
         }
+      
+        return token;
 
-        return token
       },
 
       //
 
       async session({ session, user, token, trigger, newSession }) {
+        // Refresh token logic for Google provider:
+        if (token && token.sub) {
+        
+          const googleAccounts = await prisma.account.findMany({
+            where: { userId: token.sub, provider: "google" }
+          })
+          
+          const googleAccount = googleAccounts[0]
+          
+          if (googleAccount && googleAccount.expires_at * 1000 < Date.now()) {
+            try {
+              const response = await fetch("https://oauth2.googleapis.com/token", {
+                method: "POST",
+                body: new URLSearchParams({
+                  client_id: process.env.GOOGLE_CLIENT_ID,
+                  client_secret: process.env.GOOGLE_CLIENT_SECRET,
+                  grant_type: "refresh_token",
+                  refresh_token: googleAccount.refresh_token
+                })
+              })
+
+              const tokensOrError = await response.json()
+
+              if (!response.ok) throw tokensOrError
+
+              const newTokens = tokensOrError
+
+              await prisma.account.update({
+                data: {
+                  access_token: newTokens.access_token,
+                  expires_at: Math.floor(Date.now() / 1000 + newTokens.expires_in),
+                  refresh_token: newTokens.refresh_token || googleAccount.refresh_token
+                },
+                where: {
+                  provider_providerAccountId: {
+                    provider: "google",
+                    providerAccountId: googleAccount.providerAccountId
+                  }
+                }
+              })
+            } catch (error) {
+             
+              console.error("Error refreshing access_token", error)
+              session.error = "RefreshTokenError"
+            }
+          }
+        }
+
+        // Existing session logic to add token properties to the session:
         let userInfo = token
 
         if (session.user && userInfo) {
           if (userInfo.sub) {
+            
             let userDB = await prisma.user.findUnique({ where: { id: userInfo.sub } })
-
+            
             userDB.sub = userDB.id
             userInfo = userDB
           }
 
-          // ** Add custom params to user in session which are added in `jwt()` callback via `token` parameter
           session.user.name = userInfo.name
           session.user.id = userInfo.sub
           session.user.role = userInfo.role
           session.user.businessId = userInfo.businessId
-
           session.currentEmployeeId = token.currentEmployeeId
         }
- 
+        
         return session
+
       }
     }
   }
