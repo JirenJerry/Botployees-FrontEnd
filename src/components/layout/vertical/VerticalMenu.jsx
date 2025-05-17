@@ -89,7 +89,7 @@ const VerticalMenu = ({ dictionary, scrollMenu }) => {
             {dictionary['navigation'].chat}
           </MenuItem>
           <SubMenu label={dictionary['navigation'].channels} icon={<i className='ri-signal-tower-line' />}>
-
+          <MenuItem href={`/${locale}/apps/channels/list`}>{dictionary['navigation'].list}</MenuItem>
             <MenuItem href={`/${locale}/apps/channels/settings`}>{dictionary['navigation'].settings}</MenuItem>
           </SubMenu>
           <SubMenu label={dictionary['navigation'].invoice} icon={<i className='ri-bill-line' />}>

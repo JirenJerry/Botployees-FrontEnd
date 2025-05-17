@@ -72,9 +72,7 @@ export const authOptions = (req, res) => {
 
         authorization: {
           params: {
-            prompt: 'consent',
             access_type: 'offline',
-            response_type: 'code',
             scope:
               'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email'
           }
@@ -127,24 +125,22 @@ export const authOptions = (req, res) => {
        */
       async jwt({ token, account, profile, trigger, session }) {
         if (trigger === 'update' && session?.currentEmployeeId) {
-          token.currentEmployeeId = session.currentEmployeeId;
+          token.currentEmployeeId = session.currentEmployeeId
         }
-      
+
         if (account) {
-          token.accessToken = account.access_token;
-         
-          token.refreshToken = account.refresh_token;
+          token.accessToken = account.access_token
+
+          token.refreshToken = account.refresh_token
         }
-      
+
         if (profile) {
-          token.name = profile.name;
-          token.role = profile.role || 'User';
-          token.businessId = profile.businessId;
-
+          token.name = profile.name
+          token.role = profile.role || 'User'
+          token.businessId = profile.businessId
         }
-      
-        return token;
 
+        return token
       },
 
       //
@@ -152,21 +148,20 @@ export const authOptions = (req, res) => {
       async session({ session, user, token, trigger, newSession }) {
         // Refresh token logic for Google provider:
         if (token && token.sub) {
-        
           const googleAccounts = await prisma.account.findMany({
-            where: { userId: token.sub, provider: "google" }
+            where: { userId: token.sub, provider: 'google' }
           })
-          
+
           const googleAccount = googleAccounts[0]
-          
+
           if (googleAccount && googleAccount.expires_at * 1000 < Date.now()) {
             try {
-              const response = await fetch("https://oauth2.googleapis.com/token", {
-                method: "POST",
+              const response = await fetch('https://oauth2.googleapis.com/token', {
+                method: 'POST',
                 body: new URLSearchParams({
                   client_id: process.env.GOOGLE_CLIENT_ID,
                   client_secret: process.env.GOOGLE_CLIENT_SECRET,
-                  grant_type: "refresh_token",
+                  grant_type: 'refresh_token',
                   refresh_token: googleAccount.refresh_token
                 })
               })
@@ -185,15 +180,14 @@ export const authOptions = (req, res) => {
                 },
                 where: {
                   provider_providerAccountId: {
-                    provider: "google",
+                    provider: 'google',
                     providerAccountId: googleAccount.providerAccountId
                   }
                 }
               })
             } catch (error) {
-             
-              console.error("Error refreshing access_token", error)
-              session.error = "RefreshTokenError"
+              console.error('Error refreshing access_token', error)
+              session.error = 'RefreshTokenError'
             }
           }
         }
@@ -203,9 +197,8 @@ export const authOptions = (req, res) => {
 
         if (session.user && userInfo) {
           if (userInfo.sub) {
-            
             let userDB = await prisma.user.findUnique({ where: { id: userInfo.sub } })
-            
+
             userDB.sub = userDB.id
             userInfo = userDB
           }
@@ -216,9 +209,8 @@ export const authOptions = (req, res) => {
           session.user.businessId = userInfo.businessId
           session.currentEmployeeId = token.currentEmployeeId
         }
-        
-        return session
 
+        return session
       }
     }
   }

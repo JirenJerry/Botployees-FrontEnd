@@ -1,0 +1,34 @@
+! Make all toast look the same and await
+! Make dynamic channel icons
+! Make pages lock if user does not have a business yet
+! Translate all text in the app
+
+
+x Relevant information about all of our company games
+! Each casino has a sql server database
+! We dont really have this information on the database
+! This info had to be pulled directly from the database (the information had to be accurate)
+! Much of the info required was obtained differently for some games
+! Some info was just not on the database at all
+
+- I had to search on old confluence articles to find the tables holding this info
+- Had to talk to multiple people on other teams to confirm the information
+- I also had to hard code some values that were missing, they were provided by our product owner
+- Made a query that could be used to pull this info whenever anyone needed this
+- Had to go back and forth a few times with PO until everything was correct
+
+
+x How to categorize thousands of error logs 
+! We have over 200 sql server databases
+! Each database has an error log table where most errors are stored
+! There is a central repository where everything is stored
+! The errors range from managed exceptions to sql server errors
+! The errors are not categorized in any way, so we had to come up with a way to categorize them
+! My team had abandoned this idea since adding a category would imply modifing over thousand Stored procedures to categorize the thrown exceptions
+
+- I came up with the idea to instead of adding categories when throwing the error, we could categorize the error just before storing instead
+- I created a big like switch case statement that would categorize the error based on the error message
+- This prevented modifing any existing stored procedures
+- This also implied having to remake some sections of an internal tool we use to view the errors
+
+ 

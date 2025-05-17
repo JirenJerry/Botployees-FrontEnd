@@ -6,7 +6,7 @@ import { getServerSession } from 'next-auth'
 
 import { authOptions } from '@/libs/auth'
 
-import ProductListTableServices from '@views/apps/employees/view/user-right/services/ProcutListTableServices'
+import ProductListTableServices from '@views/apps/employees/view/user-right/services/ProductListTableServices'
 
 const getBusinessServices = async (businessId, userId) => {
   try {
